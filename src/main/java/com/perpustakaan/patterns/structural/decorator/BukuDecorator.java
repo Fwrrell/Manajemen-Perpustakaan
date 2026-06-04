@@ -1,4 +1,4 @@
-package com.perpustakaan.patterns.structural.decorator;
+package main.structural.decorator;
 
 public class BukuDecorator {
     

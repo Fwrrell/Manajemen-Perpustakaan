@@ -1,4 +1,4 @@
-package com.perpustakaan.patterns.behavioral.observer;
+package main.behavioral.observer;
 
 public class Notifikasi {
     

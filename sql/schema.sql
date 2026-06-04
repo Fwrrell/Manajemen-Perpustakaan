@@ -37,6 +37,7 @@ CREATE TABLE peminjaman (
 	
 	FOREIGN KEY (id_member) REFERENCES members(id_member),
 	FOREIGN KEY (id_buku) REFERENCES buku(id_buku)
+<<<<<<< HEAD
 );
 
 -- DUMMY DATA
@@ -53,3 +54,6 @@ INSERT INTO buku VALUES
     ('BK-003', 'National Geographic Vol.201', 'Tim NG',            'Sains',      'JURNAL',  'Edisi 201',       7,    'TERSEDIA', 1,     0,    0   ),
     ('BK-004', 'Bumi Manusia',                'Pramoedya A. Toer', 'Sejarah',    'FIKSI',   NULL,              14,   'TERSEDIA', 1,     1,    1   ),
     ('BK-005', 'Kimia Organik Dasar',         'Raymond Chang',     'Sains',      'PELAJARAN','Kimia',          21,   'TERSEDIA', 0,     0,    0   );
+=======
+);
+>>>>>>> ce2a8051bd66e6f87e43f026cf5246e98a5bd81d

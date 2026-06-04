@@ -1,4 +1,4 @@
-package com.perpustakaan.patterns.behavioral.state;
+package main.behavioral.state;
 
 public class StatusBuku {
     

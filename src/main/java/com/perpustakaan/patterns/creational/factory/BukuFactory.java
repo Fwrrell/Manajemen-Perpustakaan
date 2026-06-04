@@ -1,4 +1,4 @@
-package com.perpustakaan.patterns.creational.factory;
+package main.creational.factory;
 
 public class BukuFactory {
     

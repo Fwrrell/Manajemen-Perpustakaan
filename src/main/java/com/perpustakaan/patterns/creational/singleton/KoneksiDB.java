@@ -1,4 +1,4 @@
-package com.perpustakaan.patterns.creational.singleton;
+package main.creational.singleton;
 
 public class KoneksiDB {
     

@@ -1,4 +1,4 @@
-package com.perpustakaan.patterns.structural.facade;
+package main.structural.facade;
 
 public class PerpustakaanFacade {
     

@@ -1,4 +1,4 @@
-package com.perpustakaan.patterns.behavioral.strategy;
+package main.behavioral.strategy;
 
 public class Pencarian {
     
