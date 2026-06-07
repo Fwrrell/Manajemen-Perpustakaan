@@ -1,7 +1,6 @@
 package com.perpustakaan.patterns.behavioral.state;
 
-import com.*;
-import com.perpustakaan.model.Buku;;
+import com.perpustakaan.model.Buku;
 
 public class StatusDipinjam implements StatusBuku {
     @Override
