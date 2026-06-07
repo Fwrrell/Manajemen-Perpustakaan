@@ -1,4 +1,4 @@
-package main.Model;
+package com.perpustakaan.model;
 
 import java.time.LocalDate;
 

@@ -38,3 +38,18 @@ CREATE TABLE peminjaman (
 	FOREIGN KEY (id_member) REFERENCES members(id_member),
 	FOREIGN KEY (id_buku) REFERENCES buku(id_buku)
 );
+
+-- DUMMY DATA
+INSERT INTO members VALUES
+-- 	id_member	nama_lengkap	email				nomor hp		is_blokir
+    ('MB-001', 'Budi Santoso',  'budi@email.com',   '081234567890', 0),
+    ('MB-002', 'Siti Rahayu',   'siti@email.com',   '089876543210', 0),
+    ('MB-003', 'Ahmad Fauzi',   'ahmad@email.com',  '085612345678', 0);
+
+INSERT INTO buku VALUES
+--  id_buku    judul                          penulis              genre         tipe       info_buku          maks  status      langka promo laris
+    ('BK-001', 'Laskar Pelangi',              'Andrea Hirata',     'Drama',      'FIKSI',   NULL,              14,   'TERSEDIA', 0,     1,    1   ),
+    ('BK-002', 'Matematika Kelas XII',        'Sukino',            'Sains',      'PELAJARAN','Matematika',     21,   'TERSEDIA', 0,     0,    0   ),
+    ('BK-003', 'National Geographic Vol.201', 'Tim NG',            'Sains',      'JURNAL',  'Edisi 201',       7,    'TERSEDIA', 1,     0,    0   ),
+    ('BK-004', 'Bumi Manusia',                'Pramoedya A. Toer', 'Sejarah',    'FIKSI',   NULL,              14,   'TERSEDIA', 1,     1,    1   ),
+    ('BK-005', 'Kimia Organik Dasar',         'Raymond Chang',     'Sains',      'PELAJARAN','Kimia',          21,   'TERSEDIA', 0,     0,    0   );

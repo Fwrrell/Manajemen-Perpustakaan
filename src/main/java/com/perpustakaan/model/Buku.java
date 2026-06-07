@@ -1,4 +1,4 @@
-package main.Model;
+package com.perpustakaan.model;
 
 import main.behavioral.state.StatusBuku;
 

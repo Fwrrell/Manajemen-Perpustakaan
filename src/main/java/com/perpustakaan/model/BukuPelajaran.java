@@ -1,4 +1,4 @@
-package main.Model;
+package com.perpustakaan.model;
 
 public class BukuPelajaran extends Buku{
     private String subjek;

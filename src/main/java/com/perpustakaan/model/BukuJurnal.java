@@ -1,4 +1,4 @@
-package main.Model;
+package com.perpustakaan.model;
 
 public class BukuJurnal extends Buku{
     private String idJurnal;
