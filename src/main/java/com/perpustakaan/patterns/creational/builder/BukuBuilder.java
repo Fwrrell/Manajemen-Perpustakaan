@@ -1,5 +1,4 @@
-package main.creational.builder;
-
+package com.perpustakaan.patterns.creational.builder;
 public class BukuBuilder {
     
 }

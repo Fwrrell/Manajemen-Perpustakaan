@@ -1,6 +1,7 @@
-package main.behavioral.state;
+package com.perpustakaan.patterns.behavioral.state;
 
-import main.Model.Buku;
+
+import com.perpustakaan.model.*;;
 
 public interface StatusBuku {
     public void pinjam(Buku buku);

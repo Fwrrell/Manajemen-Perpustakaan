@@ -1,6 +1,6 @@
 package com.perpustakaan.model;
 
-import main.behavioral.state.StatusBuku;
+import com.perpustakaan.patterns.behavioral.state.StatusBuku;;
 
 public class Buku {
     protected String idBuku;
