@@ -1,22 +1,20 @@
 package com.perpustakaan;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
+import com.perpustakaan.ui.MainCLI;
 
-/**
- * Hello world!
- *
- */
+import java.sql.Connection;
+
 public class App {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/perpustakaan_db?useSSL=false&serverTimezone=Asia/Jakarta";
-        String user = "root";
-        String pass = "";
+        Connection conn = KoneksiDB.getInstance().getConnection();
+        if (conn != null) {
+            System.out.println("Database Terhubung!");
 
-        try (Connection conn = DriverManager.getConnection(url, user, pass)) {
-            System.out.println("✅ Koneksi berhasil! Database: " + conn.getCatalog());
-        } catch (Exception e) {
-            System.out.println("❌ Koneksi gagal: " + e.getMessage());
+            MainCLI cli = new MainCLI();
+            cli.start();
+        } else {
+            System.out.println("Aplikasi berhenti karena gagal terhubung ke database.");
         }
     }
 }
