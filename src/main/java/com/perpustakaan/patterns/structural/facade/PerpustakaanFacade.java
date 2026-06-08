@@ -1,5 +1,5 @@
-package main.structural.facade;
+package com.perpustakaan.patterns.structural.facade;
 
 public class PerpustakaanFacade {
-    
+
 }
