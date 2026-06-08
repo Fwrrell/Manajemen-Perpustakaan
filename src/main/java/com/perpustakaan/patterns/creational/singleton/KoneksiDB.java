@@ -8,29 +8,17 @@ public class KoneksiDB {
     private static KoneksiDB instance;
     private Connection connection;
 
-    private String url = "jdbc:mysql://localhost:3306/perpustakaan_db?useSSL=false&serverTimezone=Asia/Jakarta";
-    private String username = "root";
-    private String password = "";
+    private final String URL = "jdbc:mysql://localhost:3306/perpustakaan_db?useSSL=false&serverTimezone=Asia/Jakarta";
+    private final String USERNAME = "root";
+    private final String PASSWORD = "";
 
-    private KoneksiDB() {
-        try {
-            this.connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            System.out.println("Gagal terhubung ke database: " + e.getMessage());
-        }
+    private KoneksiDB() throws SQLException {
+        this.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 
-    public static KoneksiDB getInstance() {
-        if (instance == null) {
+    public static KoneksiDB getInstance() throws SQLException {
+        if (instance == null || instance.getConnection().isClosed()) {
             instance = new KoneksiDB();
-        } else {
-            try {
-                if (instance.getConnection().isClosed()) {
-                    instance = new KoneksiDB();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return instance;
     }
