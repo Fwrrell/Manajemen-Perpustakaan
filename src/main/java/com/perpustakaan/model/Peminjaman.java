@@ -1,29 +1,32 @@
 package com.perpustakaan.model;
 
+import java.time.LocalDate;
+
 public class Peminjaman {
     private String idPeminjaman;
     private Member pengguna;
     private Buku bukuDipinjam;
     private String tanggalPeminjaman;
     private String tanggalPengembalian;
+    private String tanggalAkhirPeminjaman;
     private double biayaDenda;
     private double jumlahDibayar;
     private boolean statusPeminjaman;
 
-    public Peminjaman(String idPeminjaman, Member pengguna, Buku bukuDipinjam, String tanggalPeminjaman,
-            String tanggalPengembalian, double biayaDenda, double jumlahDibayar, boolean statusPeminjaman) {
+    public Peminjaman(String idPeminjaman, Member pengguna, Buku bukuDipinjam, String tanggalPeminjaman, String tanggalAkhirPeminjaman) {
         this.idPeminjaman = idPeminjaman;
         this.pengguna = pengguna;
         this.bukuDipinjam = bukuDipinjam;
         this.tanggalPeminjaman = tanggalPeminjaman;
-        this.tanggalPengembalian = tanggalPengembalian;
-        this.biayaDenda = biayaDenda;
-        this.jumlahDibayar = jumlahDibayar;
-        this.statusPeminjaman = statusPeminjaman;
+        this.tanggalAkhirPeminjaman = tanggalAkhirPeminjaman;
+        this.tanggalPengembalian = null;
+        this.biayaDenda = 0;
+        this.jumlahDibayar = 0;
+        this.statusPeminjaman = true;
     }
 
-    // public double HitungDendaKeterlambatan() {
-
+    // public double HitungDendaKeterlambatan(String tanggalPengembalian) {
+    //     this.tanggalPengembalian = tanggalPengembalian;
     // }
 
     public void ubahStatusPeminjaman() {

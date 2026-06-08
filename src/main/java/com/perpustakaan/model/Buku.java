@@ -1,5 +1,7 @@
 package com.perpustakaan.model;
 
+import com.perpustakaan.patterns.behavioral.state.StatusBuku;;
+
 public class Buku {
     protected String idBuku;
     protected String judul;
@@ -7,7 +9,7 @@ public class Buku {
     protected String genre;
     protected int batasHariPeminjaman;
     protected double hargaBeli;
-    //protected StatusBuku statusBuku;
+    protected StatusBuku statusBuku;
 
     public Buku(String idBuku, String judul, String penulis, String genre, int batasHariPeminjaman, double hargaBeli) {
         this.idBuku = idBuku;
@@ -38,11 +40,15 @@ public class Buku {
         return this.batasHariPeminjaman;
     }
 
-    // public StatusBuku getStatusBuku() {
-
-    // }
+    public StatusBuku getStatusBuku() {
+        return this.statusBuku;
+    }
 
     public double getBiayaDenda() {
         return (this.hargaBeli / 10);
+    }
+
+    public void setStatusBuku(StatusBuku status) {
+        this.statusBuku = status;
     }
 }

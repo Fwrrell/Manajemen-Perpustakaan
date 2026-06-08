@@ -42,6 +42,10 @@ public class Member {
         bukuDipinjam.add(x);
     }
 
+    public void pengembalianBukuDipinjam() {
+        
+    }
+
     public List<Peminjaman> getRiwayPeminjamann() {
         return riwayatPeminjaman;
     }
