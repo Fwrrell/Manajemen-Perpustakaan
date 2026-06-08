@@ -1,7 +1,11 @@
 package com.perpustakaan.ui;
 
+import com.perpustakaan.model.Buku;
+import com.perpustakaan.patterns.creational.factory.BukuFactory;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 import com.perpustakaan.patterns.structural.proxy.SistemManajemenProxy;
+import com.perpustakaan.repository.BukuRepository;
+
 import java.sql.SQLException;
 
 public class MainCLI {
@@ -67,7 +71,7 @@ public class MainCLI {
 
         switch (pilihan) {
             case "1":
-                ui.tampilkanPesan("[!] Menu Kelola Buku belum diimplementasikan.");
+                menuKelolaBuku();
                 break;
             case "2":
                 ui.tampilkanPesan("[!] Menu Kelola Member belum diimplementasikan.");
@@ -81,6 +85,50 @@ public class MainCLI {
                 break;
             default:
                 ui.tampilkanError("Pilihan tidak valid!");
+        }
+    }
+
+    public void menuKelolaBuku() {
+        ui.tampilkanHeader("KELOLA BUKU");
+        ui.tampilkanPesan("1.   Tambah Buku Baru");
+        ui.tampilkanPesan("0.   Kembali ke Dashboard");
+
+        String pilihan = ui.mintaInput("Pilih menu (0-1)");
+        if ("1".equals(pilihan)) {
+            tambahBukuBaru();
+        }
+    }
+
+    private void tambahBukuBaru() throws IllegalArgumentException {
+        ui.tampilkanHeader("TAMBAH BUKU BARU");
+
+        try {
+            String idBuku = ui.mintaInput("ID Buku (ex: BK-006)");
+            String judul = ui.mintaInput("Judul Buku");
+            String penulis = ui.mintaInput("Penulis");
+            String genre = ui.mintaInput("Genre / Subjek");
+            String jenis = ui.mintaInput("Jenis Buku (Fiksi/Jurnal/Pelajaran)");
+
+            String batasStr = ui.mintaInput("Batas Hari Peminjaman (angka)");
+            int batasHari = Integer.parseInt(batasStr);
+
+            String hargaStr = ui.mintaInput("Harga Beli (angka)");
+            double hargaBeli = Double.parseDouble(hargaStr);
+
+            BukuFactory factory = new BukuFactory();
+            Buku bukuBaru = factory.buatBuku(idBuku, judul, penulis, genre, batasHari, hargaBeli, jenis);
+
+            BukuRepository repo = new BukuRepository();
+            boolean sukses = repo.simpanBuku(bukuBaru);
+
+            if (sukses) {
+                ui.tampilkanSukses(
+                        "Buku '" + judul + "' (" + bukuBaru.getJenisBuku() + ") berhasil ditambahkan ke database!");
+            }
+        } catch (NumberFormatException e) {
+            ui.tampilkanError("Input angka tidak valid! Pastikan Batas Hari dan Harga Beli diisi angka.");
+        } catch (RuntimeException e) {
+            ui.tampilkanError(e.getMessage());
         }
     }
 }
