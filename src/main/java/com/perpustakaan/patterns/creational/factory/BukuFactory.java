@@ -1,9 +1,4 @@
 package com.perpustakaan.patterns.creational.factory;
-<<<<<<< HEAD
-
-public class BukuFactory {
-
-=======
 
 import com.perpustakaan.model.Buku;
 import com.perpustakaan.model.BukuFiksi;
@@ -20,5 +15,4 @@ public class BukuFactory {
             return new BukuPelajaran(jenisBuku, judul, penulis, penulis, 0, 0, jenisBuku);
         }
     }
->>>>>>> c3ae36d0698eb0d571b666332d1bf85070c7b510
 }
