@@ -33,7 +33,7 @@ public class Member {
         return this.email;
     }
 
-    public String noTelpon() {
+    public String getNoTelpon() {
         return this.noTelpon;
     }
     
@@ -45,7 +45,7 @@ public class Member {
         return this.bukuDipinjam.size();
     }
 
-    public List<Peminjaman> getRiwayPeminjamann() {
+    public List<Peminjaman> getRiwayatPeminjamann() {
         return riwayatPeminjaman;
     }
 
@@ -65,11 +65,13 @@ public class Member {
         this.isBlocked = blocked;
     }
 
-    public void tambahBukuDipinjam(Peminjaman x) {
-        bukuDipinjam.add(x);
+    public void tambahBukuDipinjam(Peminjaman buku) {
+        bukuDipinjam.add(buku);
     }
 
-    public void pengembalianBukuDipinjam() {
-
+    public void pengembalianBukuDipinjam(Peminjaman buku) {
+        buku.ubahStatusPeminjaman();
+        bukuDipinjam.remove(buku);
+        riwayatPeminjaman.add(buku);
     }    
 }

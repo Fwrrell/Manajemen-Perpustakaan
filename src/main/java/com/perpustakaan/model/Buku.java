@@ -11,6 +11,7 @@ public class Buku {
     protected int batasHariPeminjaman;
     protected double hargaBeli;
     protected double hargaSewa;
+    protected double hargaDenda;
     protected StatusBuku statusBuku;
 
     public Buku(String idBuku, String judul, String penulis, String genre, int batasHariPeminjaman, double hargaBeli) {
@@ -20,7 +21,8 @@ public class Buku {
         this.genre = genre;
         this.batasHariPeminjaman = batasHariPeminjaman;
         this.hargaBeli = hargaBeli;
-        this.hargaSewa = 0;
+        this.hargaSewa = (hargaBeli / 10);
+        this.hargaDenda = (hargaBeli / 10);
         this.statusBuku = new StatusTersedia();
     }
 
@@ -53,7 +55,11 @@ public class Buku {
     }
 
     public double getBiayaDenda() {
-        return (this.hargaBeli / 10);
+        return this.hargaDenda;
+    }
+
+    public double getHargaSewa() {
+        return this.hargaSewa;
     }
 
     public void setJudul(String judul) {
@@ -98,15 +104,16 @@ public class Buku {
 
     public void detailBuku() {
         System.out.println("--------------------------------------------------");
-        System.out.println("ID Buku       : " + idBuku);
-        System.out.println("Judul         : " + judul);
-        System.out.println("Penulis       : " + penulis);
-        System.out.println("Genre         : " + genre);
-        System.out.println("Jenis         : " + getJenisBuku());
-        System.out.println("Batas Pinjam  : " + batasHariPeminjaman + " hari");
-        System.out.println("Harga Beli    : Rp" + hargaBeli);
-        System.out.println("Denda/hari    : Rp" + getBiayaDenda());
-        System.out.println("Status        : " + statusBuku.getStatusBuku());
+        System.out.println("ID Buku            : " + idBuku);
+        System.out.println("Judul              : " + judul);
+        System.out.println("Penulis            : " + penulis);
+        System.out.println("Genre              : " + genre);
+        System.out.println("Jenis              : " + getJenisBuku());
+        System.out.println("Batas Pinjam       : " + batasHariPeminjaman + " hari");
+        System.out.println("Harga Beli         : Rp" + hargaBeli);
+        System.out.println("Harga Sewa         : Rp" + hargaSewa);
+        System.out.println("Harga Denda/Hari   : Rp" + hargaDenda);
+        System.out.println("Status             : " + statusBuku.getStatusBuku());
         System.out.println("--------------------------------------------------");
     }
 
