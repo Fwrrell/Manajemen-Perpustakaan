@@ -3,7 +3,7 @@ package com.perpustakaan.model;
 import com.perpustakaan.patterns.behavioral.state.StatusBuku;
 import com.perpustakaan.patterns.behavioral.state.StatusTersedia;
 
-public class Buku {
+public abstract class Buku {
     protected String idBuku;
     protected String judul;
     protected String penulis;
@@ -98,28 +98,25 @@ public class Buku {
         this.statusBuku.tandaiKerusakan(this);
     }
 
-    public String getJenisBuku() {
-        return "Umum";
-    }
+    public abstract String getJenisBuku();
 
-    public void detailBuku() {
-        System.out.println("--------------------------------------------------");
-        System.out.println("ID Buku            : " + idBuku);
-        System.out.println("Judul              : " + judul);
-        System.out.println("Penulis            : " + penulis);
-        System.out.println("Genre              : " + genre);
-        System.out.println("Jenis              : " + getJenisBuku());
-        System.out.println("Batas Pinjam       : " + batasHariPeminjaman + " hari");
-        System.out.println("Harga Beli         : Rp" + hargaBeli);
-        System.out.println("Harga Sewa         : Rp" + hargaSewa);
-        System.out.println("Harga Denda/Hari   : Rp" + hargaDenda);
-        System.out.println("Status             : " + statusBuku.getStatusBuku());
-        System.out.println("--------------------------------------------------");
+     public String getDetailInfo() {
+        return "--------------------------------------------------\n" +
+                "ID Buku       : " + idBuku + "\n" +
+                "Judul         : " + judul + "\n" +
+                "Penulis       : " + penulis + "\n" +
+                "Genre         : " + genre + "\n" +
+                "Jenis         : " + getJenisBuku() + "\n" +
+                "Batas Pinjam  : " + batasHariPeminjaman + " hari\n" +
+                "Harga Beli    : Rp" + hargaBeli + "\n" +
+                "Denda/hari    : Rp" + getBiayaDenda() + "\n" +
+                "Status        : " + statusBuku.getStatusBuku() + "\n" +
+                "--------------------------------------------------";
     }
 
     @Override
     public String toString() {
-        return "[" + idBuku + "] " + judul + " - " + penulis
-                + " - Jenis Buku " + this.getJenisBuku() + " - Status Buku " + this.statusBuku;
+        return "[" + idBuku + "] " + judul + " - " + penulis + " - Jenis Buku " + this.getJenisBuku()
+                + " - Status Buku " + this.statusBuku.getStatusBuku();
     }
 }

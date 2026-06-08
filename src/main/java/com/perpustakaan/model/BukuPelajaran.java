@@ -1,9 +1,10 @@
 package com.perpustakaan.model;
 
 public class BukuPelajaran extends Buku {
-    private String subjek; 
+    private String subjek;
 
-    public BukuPelajaran(String idBuku, String judul, String penulis, String genre, int batasHariPeminjaman, double hargaBeli, String subjek) {
+    public BukuPelajaran(String idBuku, String judul, String penulis, String genre, int batasHariPeminjaman,
+            double hargaBeli, String subjek) {
         super(idBuku, judul, penulis, genre, batasHariPeminjaman, hargaBeli);
         this.subjek = subjek;
     }
@@ -22,8 +23,8 @@ public class BukuPelajaran extends Buku {
     }
 
     @Override
-    public void detailBuku() {
-        super.detailBuku();
-        System.out.println("Subjek        : " + subjek);
+    public String getDetailInfo() {
+        return super.getDetailInfo().replace("--------------------------------------------------$",
+                "Subjek        : " + subjek + "\n--------------------------------------------------");
     }
 }
