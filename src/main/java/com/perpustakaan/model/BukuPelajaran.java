@@ -1,10 +1,29 @@
 package com.perpustakaan.model;
 
-public class BukuPelajaran extends Buku{
-    private String subjek;
+public class BukuPelajaran extends Buku {
+    private String subjek; 
 
-    public BukuPelajaran(String idBuku, String judul, String penulis, String genre, int batasHariPeminjaman, double hargaBuku, String subjek){
-        super(idBuku, judul, penulis, genre, batasHariPeminjaman, hargaBuku);
+    public BukuPelajaran(String idBuku, String judul, String penulis, String genre, int batasHariPeminjaman, double hargaBeli, String subjek) {
+        super(idBuku, judul, penulis, genre, batasHariPeminjaman, hargaBeli);
         this.subjek = subjek;
+    }
+
+    public String getSubjek() {
+        return this.subjek;
+    }
+
+    public void setSubjek(String subjek) {
+        this.subjek = subjek;
+    }
+
+    @Override
+    public String getJenisBuku() {
+        return "Pelajaran";
+    }
+
+    @Override
+    public void detailBuku() {
+        super.detailBuku();
+        System.out.println("Subjek        : " + subjek);
     }
 }

@@ -6,13 +6,16 @@ import com.perpustakaan.model.BukuJurnal;
 import com.perpustakaan.model.BukuPelajaran;
 
 public class BukuFactory {
-    public Buku buatBuku(String judul, String penulis, String jenisBuku) {
+    public Buku buatBuku(String idBuku, String judul, String penulis, String genre,
+            int batasHariPeminjaman, double hargaBeli, String jenisBuku) {
         if (jenisBuku.equals("Fiksi")) {
-            return new BukuFiksi("1", judul, penulis, jenisBuku, 0, 0);
+            return new BukuFiksi(idBuku, judul, penulis, genre, batasHariPeminjaman, hargaBeli);
         } else if (jenisBuku.equals("Jurnal")) {
-            return new BukuJurnal(judul, jenisBuku, penulis, penulis, 0, null, jenisBuku);
+            return new BukuJurnal(idBuku, judul, penulis, genre, batasHariPeminjaman, hargaBeli, "JurnalID-" + idBuku);
+        } else if (jenisBuku.equals("Pelajaran")) {
+            return new BukuPelajaran(idBuku, judul, penulis, genre, batasHariPeminjaman, hargaBeli, genre);
         } else {
-            return new BukuPelajaran(jenisBuku, judul, penulis, penulis, 0, 0, jenisBuku);
+            return new Buku(idBuku, judul, penulis, genre, batasHariPeminjaman, hargaBeli);
         }
     }
 }

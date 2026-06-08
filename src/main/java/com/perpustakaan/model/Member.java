@@ -11,8 +11,7 @@ public class Member {
     private List<Peminjaman> bukuDipinjam;
     private List<Peminjaman> riwayatPeminjaman;
 
-    public Member(String nama, String email, String noTelpon, String idPengguna, boolean isBlocked,
-            List<Peminjaman> bukuDipinjam, List<Peminjaman> riwayatPeminjamann) {
+    public Member(String nama, String email, String noTelpon, String idPengguna, boolean isBlocked, List<Peminjaman> bukuDipinjam, List<Peminjaman> riwayatPeminjamann) {
         this.nama = nama;
         this.email = email;
         this.noTelpon = noTelpon;
@@ -30,6 +29,14 @@ public class Member {
         return this.nama;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String noTelpon() {
+        return this.noTelpon;
+    }
+    
     public boolean isBlocked() {
         return this.isBlocked;
     }
@@ -38,15 +45,31 @@ public class Member {
         return this.bukuDipinjam.size();
     }
 
+    public List<Peminjaman> getRiwayPeminjamann() {
+        return riwayatPeminjaman;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setTelpon(String noTelpon) {
+        this.noTelpon = noTelpon;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.isBlocked = blocked;
+    }
+
     public void tambahBukuDipinjam(Peminjaman x) {
         bukuDipinjam.add(x);
     }
 
     public void pengembalianBukuDipinjam() {
-        
-    }
 
-    public List<Peminjaman> getRiwayPeminjamann() {
-        return riwayatPeminjaman;
-    }
+    }    
 }
