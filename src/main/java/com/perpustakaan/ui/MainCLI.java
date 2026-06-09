@@ -28,11 +28,7 @@ public class MainCLI {
             ui.tampilkanSukses("Sistem siap. Database terhubung.");
 
             while (isRunning) {
-                if (!isLoggedIn) {
-                    tampilkanMenuLogin();
-                } else {
-                    tampilkanMenuUtama();
-                }
+                tampilkanMenuUtama();
             }
         } catch (SQLException e) {
             ui.tampilkanError("Gagal terhubung ke database. Sistem dihentikan.");
