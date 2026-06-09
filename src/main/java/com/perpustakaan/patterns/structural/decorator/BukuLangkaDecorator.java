@@ -7,9 +7,9 @@ public class BukuLangkaDecorator extends BukuDecorator {
         super(buku);
     }
 
-    @Override
-    public int getBiayaDenda() {
-        // TODO Auto-generated method stub
-        return super.getBiayaDenda();
-    }
+   @Override
+   public double getBiayaDenda() {
+       // TODO Auto-generated method stub
+       return super.getBiayaDenda() + buku.getHargaSewa() * 3;
+   }
 }
