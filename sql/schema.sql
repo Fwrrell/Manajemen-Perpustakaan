@@ -8,13 +8,8 @@ CREATE TABLE buku (
 	id_buku				INT PRIMARY KEY AUTO_INCREMENT,
 	judul 				VARCHAR(255) NOT NULL,
 	penulis				VARCHAR(255) NOT NULL,
-<<<<<<< HEAD
 	genre					VARCHAR(100),
 	tipe_buku			ENUM('PELAJARAN', 'FIKSI', 'JURNAL', 'KOLEKSI SPESIAL') NOT NULL,
-=======
-	genre				VARCHAR(100),
-	tipe_buku			ENUM('PELAJARAN', 'FIKSI', 'JURNAL') NOT NULL,
->>>>>>> ee7be2e9255257b25b94fb342147935d5c10ef33
 	info_buku 			VARCHAR(255),
 	maks_peminjaman		INT NOT NULL,
 	harga_beli			BIGINT NOT NULL DEFAULT 0,

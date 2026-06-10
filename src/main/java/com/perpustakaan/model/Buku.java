@@ -100,7 +100,7 @@ public abstract class Buku {
 
     public abstract String getJenisBuku();
 
-     public String getDetailInfo() {
+    public String getDetailInfo() {
         return "--------------------------------------------------\n" +
                 "ID Buku       : " + idBuku + "\n" +
                 "Judul         : " + judul + "\n" +

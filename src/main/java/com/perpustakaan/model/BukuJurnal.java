@@ -24,7 +24,7 @@ public class BukuJurnal extends Buku {
 
     @Override
     public String getDetailInfo() {
-        return super.getDetailInfo().replace("--------------------------------------------------$",
+        return super.getDetailInfo().replaceAll("--------------------------------------------------$",
                 "ID Jurnal     : " + idJurnal + "\n--------------------------------------------------");
     }
 }

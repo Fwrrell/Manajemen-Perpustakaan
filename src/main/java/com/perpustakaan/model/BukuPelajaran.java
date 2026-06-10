@@ -24,7 +24,7 @@ public class BukuPelajaran extends Buku {
 
     @Override
     public String getDetailInfo() {
-        return super.getDetailInfo().replace("--------------------------------------------------$",
+        return super.getDetailInfo().replaceAll("--------------------------------------------------$",
                 "Subjek        : " + subjek + "\n--------------------------------------------------");
     }
 }

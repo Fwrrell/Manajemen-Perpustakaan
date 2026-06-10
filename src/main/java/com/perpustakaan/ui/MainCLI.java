@@ -6,6 +6,7 @@ import com.perpustakaan.patterns.creational.builder.BukuBuilder;
 import com.perpustakaan.patterns.creational.factory.BukuFactory;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 import com.perpustakaan.patterns.structural.proxy.SistemManajemenProxy;
+import com.perpustakaan.repository.BukuRepository;
 
 import java.sql.SQLException;
 
@@ -111,11 +112,15 @@ public class MainCLI {
         ui.tampilkanHeader("TAMBAH BUKU BARU");
 
         try {
-            String idBuku = ui.mintaInput("ID Buku (ex: BK-006)");
             String judul = ui.mintaInput("Judul Buku");
             String penulis = ui.mintaInput("Penulis");
             String genre = ui.mintaInput("Genre / Subjek");
             String jenis = ui.mintaInput("Jenis Buku (Fiksi/Jurnal/Pelajaran)");
+
+            String info = null;
+            if (!jenis.equalsIgnoreCase("Fiksi")) {
+                info = ui.mintaInput("Info Tambahan (ID Jurnal / Subjek Pelajaran)");
+            }
 
             String batasStr = ui.mintaInput("Batas Hari Peminjaman (angka)");
             int batasHari = Integer.parseInt(batasStr);
@@ -124,14 +129,15 @@ public class MainCLI {
             double hargaBeli = Double.parseDouble(hargaStr);
 
             BukuFactory factory = new BukuFactory();
-            // Buku bukuBaru = factory.buatBuku(idBuku, judul, penulis, genre, batasHari, hargaBeli, jenis);
+            Buku bukuBaru = factory.buatBuku(jenis, judul, penulis, genre, batasHari, hargaBeli, info);
 
-            
+            BukuRepository repo = new BukuRepository();
+            boolean sukses = repo.tambahBuku(bukuBaru);
 
-            // if (sukses) {
-            //     ui.tampilkanSukses(
-            //             "Buku '" + judul + "' (" + bukuBaru.getJenisBuku() + ") berhasil ditambahkan ke database!");
-            // }
+            if (sukses) {
+                ui.tampilkanSukses(
+                        "Buku '" + judul + "' (" + bukuBaru.getJenisBuku() + ") berhasil ditambahkan ke database!");
+            }
         } catch (NumberFormatException e) {
             ui.tampilkanError("Input angka tidak valid! Pastikan Batas Hari dan Harga Beli diisi angka.");
         } catch (RuntimeException e) {
@@ -145,7 +151,8 @@ public class MainCLI {
 
         try {
             // Data Wajib
-            String idBuku = ui.mintaInput("ID Buku (ex: BK-999)");
+            String idBukuStr = ui.mintaInput("ID Buku (ex: 999)");
+            int idBuku = Integer.parseInt(idBukuStr);
             String judul = ui.mintaInput("Judul Buku");
             String penulis = ui.mintaInput("Penulis");
             String genre = ui.mintaInput("Kategori/Genre");
@@ -179,7 +186,7 @@ public class MainCLI {
             BukuKoleksiSpesial bukuSpesial = builder.build();
 
             BukuRepository repo = new BukuRepository();
-            boolean sukses = repo.simpanBuku(bukuSpesial);
+            boolean sukses = repo.tambahBuku(bukuSpesial);
 
             if (sukses) {
                 ui.tampilkanSukses("Buku Koleksi Spesial '" + judul + "' berhasil didaftarkan ke sistem!");
