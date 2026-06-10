@@ -8,6 +8,7 @@ import com.perpustakaan.patterns.creational.builder.BukuBuilder;
 import com.perpustakaan.patterns.creational.factory.BukuFactory;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 import com.perpustakaan.patterns.structural.proxy.SistemManajemenProxy;
+import com.perpustakaan.patterns.structural.decorator.BukuBaruDecorator;
 import com.perpustakaan.patterns.structural.facade.PerpustakaanFacade;
 
 import com.perpustakaan.repository.BukuRepository;
@@ -233,6 +234,7 @@ public class MainCLI {
         ui.tampilkanHeader("KELOLA BUKU");
         ui.tampilkanPesan("1. Tambah Buku Baru");
         ui.tampilkanPesan("2. Tambah Buku Ekstra Detail");
+        ui.tampilkanPesan("3. Tandai Label baru");
         ui.tampilkanPesan("0. Kembali ke Dashboard");
 
         String pilihan = ui.mintaInput("Pilih menu (0-1)");
@@ -240,6 +242,8 @@ public class MainCLI {
             tambahBukuBaru();
         } else if ("2".equals(pilihan)) {
             tambahBukuSpesial();
+        } else if ("3".equals(pilihan)) {
+            tandaiLabelBuku();
         }
     }
 
@@ -372,6 +376,68 @@ public class MainCLI {
             ui.tampilkanError("Input angka tidak valid!");
         } catch (Exception e) {
             ui.tampilkanError("Terjadi kesalahan: " + e.getMessage());
+        }
+    }
+
+    private void tandaiLabelBuku() {
+        ui.tampilkanHeader("ATUR LABEL BUKU");
+        try {
+            int id = Integer.parseInt(ui.mintaInput("Masukkan ID Buku"));
+
+            BukuRepository repo = new BukuRepository();
+            Buku buku = repo.cariBuku(id);
+            if (buku == null) {
+                ui.tampilkanError("Buku tidak ditemukan!");
+                return;
+            }
+
+            ui.tampilkanPesan("Buku  : " + buku.getJudul());
+            ui.tampilkanPesan("Label Buku : ");
+            ui.tampilkanPesan("1. Baru");
+            ui.tampilkanPesan("2. Populer");
+            ui.tampilkanPesan("3. Langka");
+            ui.tampilkanPesan("4. Promo");
+            ui.tampilkanPesan("0. Batal");
+
+            String label = ui.mintaInput("Pilih Label Buku");
+            if (label.equals("0")) {
+                return;
+            }
+
+            String aksi = ui.mintaInput("Tandai label ini? (y = tandai / t = lepas)");
+            boolean status = aksi.equals("y");
+
+            boolean sukses;
+            switch (label) {
+                case "1":
+                    sukses = facade.tandaiBaru(id, status);
+                    break;
+                case "2":
+                    sukses = facade.tandaiPopuler(id, status);
+                    break;
+                case "3":
+                    sukses = facade.tandaiLangka(id, status);
+                    break;
+                case "4":
+                    sukses = facade.tandaiPromo(id, status);
+                    break;
+                default:
+                    ui.tampilkanError("Pilihan tidak valid!");
+                    return;
+            }
+
+            if (sukses) {
+                if (status) {
+                    ui.tampilkanSukses("Label berhasil ditambahkan ke buku!");
+                } else {
+                    ui.tampilkanSukses("Label berhasil dilepas dari buku!");
+                }
+            } else {
+                ui.tampilkanError("Gagal memperbarui label buku.");
+            }
+
+        } catch (NumberFormatException e) {
+            ui.tampilkanError("Input angka tidak valid!");
         }
     }
 

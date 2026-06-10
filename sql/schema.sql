@@ -16,7 +16,8 @@ CREATE TABLE buku (
 	status_buku			ENUM('TERSEDIA', 'DIPINJAM', 'DIPESAN', 'RUSAK') DEFAULT 'TERSEDIA',
 	is_langka 			TINYINT DEFAULT 0,
 	is_promo 			TINYINT DEFAULT 0,
-	is_laris			TINYINT DEFAULT 0
+	is_laris			TINYINT DEFAULT 0,
+	is_baru				TINYINT DEFAULT 0
 );
 
 CREATE TABLE members (
@@ -50,10 +51,11 @@ INSERT INTO members (nama_lengkap, email, phone, is_blokir) VALUES
     ('Siti Rahayu',   'siti@email.com', '089876543210', 0),
     ('Ahmad Fauzi',   'ahmad@email.com', '085612345678', 0);
 
-INSERT INTO buku (judul, penulis, genre, tipe_buku, info_buku, maks_peminjaman, harga_beli, status_buku, is_langka, is_promo, is_laris)VALUES
+INSERT INTO buku (judul, penulis, genre, tipe_buku, info_buku, maks_peminjaman, harga_beli, status_buku, is_langka, is_promo, is_laris, is_baru)VALUES
 --  judul                          penulis              genre         tipe       info_buku       maks  harga    status      langka promo laris
-    ('Laskar Pelangi',              'Andrea Hirata',     'Drama',      'FIKSI',   NULL,            14,   95000,   'TERSEDIA', 0,     1,    1   ),
-    ('Matematika Kelas XII',        'Sukino',            'Sains',      'PELAJARAN','Matematika',   21,   150000,  'TERSEDIA', 0,     0,    0   ),
-    ('National Geographic Vol.201', 'Tim NG',            'Sains',      'JURNAL',  'Edisi 201',     7,    50000,   'TERSEDIA', 1,     0,    0   ),
-    ('Bumi Manusia',                'Pramoedya A. Toer', 'Sejarah',    'FIKSI',   NULL,            14,   100000,  'TERSEDIA', 1,     1,    1   ),
-    ('Kimia Organik Dasar',         'Raymond Chang',     'Sains',      'PELAJARAN','Kimia',        21,   120000,  'TERSEDIA', 0,     0,    0   );
+    ('Laskar Pelangi',              'Andrea Hirata',     'Drama',      'FIKSI',   NULL,            14,   95000,   'TERSEDIA', 0,     1,    1,	0),
+    ('Matematika Kelas XII',        'Sukino',            'Sains',      'PELAJARAN','Matematika',   21,   150000,  'TERSEDIA', 0,     0,    0,	0),
+    ('National Geographic Vol.201', 'Tim NG',            'Sains',      'JURNAL',  'Edisi 201',     7,    50000,   'TERSEDIA', 1,     0,    0,   0),
+    ('Bumi Manusia',                'Pramoedya A. Toer', 'Sejarah',    'FIKSI',   NULL,            14,   100000,  'TERSEDIA', 1,     1,    1,   0),
+	('Harry Potter',                'J.K.Rowling', 		 'Fantasi',    'FIKSI',   NULL,            14,   100000,  'TERSEDIA', 1,     1,    1,	1),
+    ('Kimia Organik Dasar',         'Raymond Chang',     'Sains',      'PELAJARAN','Kimia',        21,   120000,  'TERSEDIA', 0,     0,    0,   0);

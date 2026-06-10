@@ -9,6 +9,7 @@ import com.perpustakaan.patterns.behavioral.state.StatusDipinjam;
 import com.perpustakaan.patterns.behavioral.state.StatusRusak;
 import com.perpustakaan.patterns.behavioral.state.StatusTersedia;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
+import com.perpustakaan.patterns.structural.decorator.BukuBaruDecorator;
 import com.perpustakaan.patterns.structural.decorator.BukuLangkaDecorator;
 import com.perpustakaan.patterns.structural.decorator.BukuPopulerDecorator;
 import com.perpustakaan.patterns.structural.decorator.BukuPromo;
@@ -113,6 +114,22 @@ public class BukuRepository {
         }
     }
 
+    public boolean tandaiBaru(int idBuku, boolean baru) {
+        String sql = "UPDATE buku SET is_baru = ? WHERE id_buku = ?";
+
+        try {
+            Connection conn = KoneksiDB.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setBoolean(1, baru);
+            ps.setInt(2, idBuku);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Gagal mengubah buku menjadi langka" + e.getMessage());
+        }
+    }
+
     public Buku cariBuku(int idBuku) {
         String sql = "SELECT * FROM buku WHERE id_buku = ?";
 
@@ -182,6 +199,7 @@ public class BukuRepository {
         boolean langka = rs.getBoolean("is_langka");
         boolean promo = rs.getBoolean("is_promo");
         boolean populer = rs.getBoolean("is_laris");
+        boolean baru = rs.getBoolean("is_baru");
 
         double hargaBeli = rs.getDouble("harga_beli");
 
@@ -234,6 +252,9 @@ public class BukuRepository {
                 break;
         }
 
+        if (baru) {
+            buku = new BukuBaruDecorator(buku);
+        }
         if (langka) {
             buku = new BukuLangkaDecorator(buku);
         }

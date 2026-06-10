@@ -32,25 +32,20 @@ public class PerpustakaanFacade {
         return new BukuRepository().tambahBuku(newBuku);
     }
 
-    public Buku tandaiBukuLangka(int idBuku, boolean langka) {
-        BukuRepository x = new BukuRepository();
-        x.tandaiLangka(idBuku, langka);
-
-        return x.cariBuku(idBuku);
+    public boolean tandaiBaru(int idBuku, boolean status) {
+        return new BukuRepository().tandaiBaru(idBuku, status);
     }
 
-    public Buku tandaiBukuPopouler(int idBuku, boolean populer) {
-        BukuRepository x = new BukuRepository();
-        x.tandaiPopuler(idBuku, populer);
-
-        return x.cariBuku(idBuku);
+    public boolean tandaiPopuler(int idBuku, boolean status) {
+        return new BukuRepository().tandaiPopuler(idBuku, status);
     }
 
-    public Buku tandaiBukuPromo(int idBuku, boolean promo) {
-        BukuRepository x = new BukuRepository();
-        x.tandaiPromo(idBuku, promo);
+    public boolean tandaiLangka(int idBuku, boolean status) {
+        return new BukuRepository().tandaiLangka(idBuku, status);
+    }
 
-        return x.cariBuku(idBuku);
+    public boolean tandaiPromo(int idBuku, boolean status) {
+        return new BukuRepository().tandaiPromo(idBuku, status);
     }
 
     public Peminjaman pinjamBuku(int idMember, int idBuku) {
