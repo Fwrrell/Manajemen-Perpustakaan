@@ -180,6 +180,38 @@ public class BukuRepository {
         }
     }
 
+    public int hitungTotalBuku() {
+        int total = 0;
+        String sql = "SELECT COUNT(*) AS total FROM buku";
+        try {
+            Connection conn = KoneksiDB.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            System.out.println("Gagal menghitung total buku: " + e.getMessage());
+        }
+        return total;
+    }
+
+    public List<Buku> ambilBukuTersedia() {
+        String sql = "SELECT * FROM buku WHERE status_buku = 'TERSEDIA'";
+        List<Buku> daftarBuku = new ArrayList<>();
+        try {
+            Connection conn = KoneksiDB.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                daftarBuku.add(buatBuku(rs));
+            }
+        } catch (SQLException e) {
+            System.out.println("Gagal mengambil buku tersedia: " + e.getMessage());
+        }
+        return daftarBuku;
+    }
+
     private Buku buatBuku(ResultSet rs) throws SQLException {
         String idBukuStr = rs.getString("id_buku");
         int idBuku;

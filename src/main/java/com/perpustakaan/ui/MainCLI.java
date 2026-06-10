@@ -72,6 +72,26 @@ public class MainCLI {
 
     private void tampilkanMenuUtama() {
         ui.tampilkanHeader("DASHBOARD PUSTAKAWAN");
+        System.out.printf(" Total Eksemplar Buku : %d Buku\n", facade.getTotalBuku());
+        System.out.printf(" Total Peminjam Aktif : %d Orang\n", facade.getTotalPeminjamAktif());
+        System.out.println("--------------------------------------------------------------");
+        System.out.println(" DAFTAR BUKU TERSEDIA:");
+        System.out.println("--------------------------------------------------------------");
+        System.out.printf(" | %-4s | %-28s | %-16s |\n", "ID", "JUDUL", "TIPE");
+        System.out.println("--------------------------------------------------------------");
+
+        List<Buku> bukuTersedia = facade.getBukuTersedia();
+        if (bukuTersedia.isEmpty()) {
+            System.out.println(" | Tidak ada buku yang tersedia saat ini.                     |");
+        } else {
+            for (Buku b : bukuTersedia) {
+                System.out.printf(" | %-4s | %-28s | %-16s |\n",
+                        b.getIdBuku(),
+                        batasiTeks(b.getJudul(), 28),
+                        batasiTeks(b.getJenisBuku(), 16));
+            }
+        }
+        System.out.println("--------------------------------------------------------------");
         ui.tampilkanPesan("1. Kelola Buku");
         ui.tampilkanPesan("2. Kelola Member");
         ui.tampilkanPesan("3. Transaksi Buku");
@@ -100,6 +120,14 @@ public class MainCLI {
             default:
                 ui.tampilkanError("Pilihan tidak valid!");
         }
+    }
+
+    private String batasiTeks(String teks, int batas) {
+        if (teks == null)
+            return "";
+        if (teks.length() > batas)
+            return teks.substring(0, batas - 3) + "...";
+        return teks;
     }
 
     public void menuKelolaMember() {

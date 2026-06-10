@@ -124,4 +124,16 @@ public class PerpustakaanFacade {
     public Member cariMember(int idMember) {
         return new MemberRepository().cariMember(idMember);
     }
+
+    public int getTotalBuku() {
+        return new BukuRepository().hitungTotalBuku();
+    }
+
+    public int getTotalPeminjamAktif() {
+        return new PeminjamanRepository().hitungPeminjamAktif();
+    }
+
+    public List<Buku> getBukuTersedia() {
+        return new BukuRepository().ambilBukuTersedia();
+    }
 }

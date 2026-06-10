@@ -53,4 +53,20 @@ public class PeminjamanRepository {
             throw new RuntimeException("Peminjaman gagal ditambahkan " + e.getMessage());
         }
     }
+
+    public int hitungPeminjamAktif() {
+        int total = 0;
+        String sql = "SELECT COUNT(DISTINCT id_member) AS total FROM peminjaman WHERE status_peminjaman = 'AKTIF'";
+        try {
+            Connection conn = KoneksiDB.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            System.out.println("Gagal menghitung peminjam aktif: " + e.getMessage());
+        }
+        return total;
+    }
 }
