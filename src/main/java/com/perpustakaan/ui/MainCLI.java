@@ -1,6 +1,8 @@
 package com.perpustakaan.ui;
 
 import com.perpustakaan.model.Buku;
+import com.perpustakaan.model.BukuKoleksiSpesial;
+import com.perpustakaan.patterns.creational.builder.BukuBuilder;
 import com.perpustakaan.patterns.creational.factory.BukuFactory;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 import com.perpustakaan.patterns.structural.proxy.SistemManajemenProxy;
@@ -90,12 +92,15 @@ public class MainCLI {
 
     public void menuKelolaBuku() {
         ui.tampilkanHeader("KELOLA BUKU");
-        ui.tampilkanPesan("1.   Tambah Buku Baru");
-        ui.tampilkanPesan("0.   Kembali ke Dashboard");
+        ui.tampilkanPesan("1. Tambah Buku Baru");
+        ui.tampilkanPesan("2. Tambah Buku Ekstra Detail");
+        ui.tampilkanPesan("0. Kembali ke Dashboard");
 
         String pilihan = ui.mintaInput("Pilih menu (0-1)");
         if ("1".equals(pilihan)) {
             tambahBukuBaru();
+        } else if ("2".equals(pilihan)) {
+            tambahBukuSpesial();
         }
     }
 
@@ -129,6 +134,59 @@ public class MainCLI {
             ui.tampilkanError("Input angka tidak valid! Pastikan Batas Hari dan Harga Beli diisi angka.");
         } catch (RuntimeException e) {
             ui.tampilkanError(e.getMessage());
+        }
+    }
+
+    private void tambahBukuSpesial() {
+        ui.tampilkanHeader("TAMBAH BUKU SPESIAL (KOLEKSI)");
+        ui.tampilkanPesan("[!] Tekan ENTER langsung jika data opsional tidak diketahui.");
+
+        try {
+            // Data Wajib
+            String idBuku = ui.mintaInput("ID Buku (ex: BK-999)");
+            String judul = ui.mintaInput("Judul Buku");
+            String penulis = ui.mintaInput("Penulis");
+            String genre = ui.mintaInput("Kategori/Genre");
+
+            int batasHari = Integer.parseInt(ui.mintaInput("Batas Hari Peminjaman (angka)"));
+            double hargaBeli = Double.parseDouble(ui.mintaInput("Harga Beli (angka)"));
+
+            BukuBuilder builder = new BukuBuilder(idBuku, judul, penulis, genre, batasHari, hargaBeli);
+
+            // Data Opsional
+            String isbn = ui.mintaInput("Nomor ISBN (opsional)");
+            if (!isbn.trim().isEmpty())
+                builder.setIsbn(isbn);
+
+            String penerbit = ui.mintaInput("Nama Penerbit (opsional)");
+            if (!penerbit.trim().isEmpty())
+                builder.setPenerbit(penerbit);
+
+            String tahun = ui.mintaInput("Tahun Terbit (opsional)");
+            if (!tahun.trim().isEmpty())
+                builder.setTahunTerbit(tahun);
+
+            String rak = ui.mintaInput("Lokasi Rak Fisik (opsional)");
+            if (!rak.trim().isEmpty())
+                builder.setLokasiRak(rak);
+
+            String edisi = ui.mintaInput("Edisi Cetakan (opsional)");
+            if (!edisi.trim().isEmpty())
+                builder.setEdisi(edisi);
+
+            BukuKoleksiSpesial bukuSpesial = builder.build();
+
+            BukuRepository repo = new BukuRepository();
+            boolean sukses = repo.simpanBuku(bukuSpesial);
+
+            if (sukses) {
+                ui.tampilkanSukses("Buku Koleksi Spesial '" + judul + "' berhasil didaftarkan ke sistem!");
+            }
+
+        } catch (NumberFormatException e) {
+            ui.tampilkanError("Input angka tidak valid!");
+        } catch (Exception e) {
+            ui.tampilkanError("Terjadi kesalahan: " + e.getMessage());
         }
     }
 }

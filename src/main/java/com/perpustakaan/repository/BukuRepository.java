@@ -2,6 +2,7 @@ package com.perpustakaan.repository;
 
 import com.perpustakaan.model.Buku;
 import com.perpustakaan.model.BukuJurnal;
+import com.perpustakaan.model.BukuKoleksiSpesial;
 import com.perpustakaan.model.BukuPelajaran;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 
@@ -31,6 +32,8 @@ public class BukuRepository {
                 infoBuku = ((BukuJurnal) buku).getIdJurnal();
             } else if (buku instanceof BukuPelajaran) {
                 infoBuku = ((BukuPelajaran) buku).getSubjek();
+            } else if (buku instanceof BukuKoleksiSpesial) {
+                infoBuku = ((BukuKoleksiSpesial) buku).getInfoSpesial();
             }
             pstmt.setString(6, infoBuku);
 

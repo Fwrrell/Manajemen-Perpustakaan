@@ -6,7 +6,7 @@ CREATE TABLE buku (
 	judul 				VARCHAR(255) NOT NULL,
 	penulis				VARCHAR(255) NOT NULL,
 	genre					VARCHAR(100),
-	tipe_buku			ENUM('PELAJARAN', 'FIKSI', 'JURNAL') NOT NULL,
+	tipe_buku			ENUM('PELAJARAN', 'FIKSI', 'JURNAL', 'KOLEKSI SPESIAL') NOT NULL,
 	info_buku 			VARCHAR(255),
 	maks_peminjaman	INT NOT NULL,
 	status_buku			ENUM('TERSEDIA', 'DIPINJAM', 'DIPESAN', 'RUSAK') DEFAULT 'TERSEDIA',
