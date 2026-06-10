@@ -11,13 +11,13 @@ import com.perpustakaan.model.Member;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 
 public class MemberRepository {
-    public boolean tambahMember(String nama, String email, String noTelpon, boolean isBlokir) {
+    public int tambahMember(String nama, String email, String noTelpon, boolean isBlokir) {
         String sql = "INSERT INTO members (nama_lengkap, email, phone, is_blokir) "
                 +
                 "VALUES (?, ?, ?, ?)";
         try {
             Connection conn = KoneksiDB.getInstance().getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement pstmt = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
 
             pstmt.setString(1, nama);
             pstmt.setString(2, email);
@@ -26,7 +26,13 @@ public class MemberRepository {
 
             int affected = pstmt.executeUpdate();
 
-            return affected > 0;
+            if (affected > 0) {
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+            return -1;
         } catch (SQLException e) {
             throw new RuntimeException("Gagal menambahkan member baru ke database: " + e.getMessage());
         }

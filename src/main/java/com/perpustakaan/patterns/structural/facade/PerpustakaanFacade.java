@@ -22,13 +22,13 @@ public class PerpustakaanFacade {
         pencarian = new KonteksPencarian(new PencarianBerdasarkanJudul());
     }
 
-    public boolean RegistrasiMember(String nama, String email, String noTelpon) {
+    public int RegistrasiMember(String nama, String email, String noTelpon) {
         return new MemberRepository().tambahMember(nama, email, noTelpon, false);
     }
 
     public boolean tambahBuku(String tipe, String judul, String penulis, String genre, int maksPeminjamanm,
             double hargaBeli, String info) {
-        Buku newBuku = new BukuFactory().buatBuku(tipe, judul, penulis, genre, maksPeminjamanm, hargaBeli, null);
+        Buku newBuku = new BukuFactory().buatBuku(tipe, judul, penulis, genre, maksPeminjamanm, hargaBeli, info);
         return new BukuRepository().tambahBuku(newBuku);
     }
 

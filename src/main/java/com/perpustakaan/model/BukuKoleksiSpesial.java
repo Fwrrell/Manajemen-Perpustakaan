@@ -35,7 +35,6 @@ public class BukuKoleksiSpesial extends Buku {
     @Override
     public String getDetailInfo() {
         String baseInfo = super.getDetailInfo();
-        // Mencari baris terakhir (garis pemisah) untuk disisipkan informasi tambahan sebelum garis tersebut
         return baseInfo.replaceAll("--------------------------------------------------$",
                 "ISBN          : " + (isbn.isEmpty() ? "Tidak Ada" : isbn) + "\n" +
                         "Tahun Terbit  : " + (tahunTerbit.isEmpty() ? "Tidak Ada" : tahunTerbit) + "\n" +

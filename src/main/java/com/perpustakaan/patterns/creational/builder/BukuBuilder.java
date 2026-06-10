@@ -3,7 +3,7 @@ package com.perpustakaan.patterns.creational.builder;
 import com.perpustakaan.model.BukuKoleksiSpesial;
 
 public class BukuBuilder {
-    public final int idBuku;
+    public int idBuku = 0;
     public final String judul;
     public final String penulis;
     public final String genre;
@@ -17,14 +17,18 @@ public class BukuBuilder {
     public String lokasiRak = "";
     public String edisi = "";
 
-    public BukuBuilder(int idBuku, String judul, String penulis, String genre, int batasHariPeminjaman,
+    public BukuBuilder(String judul, String penulis, String genre, int batasHariPeminjaman,
             double hargaBeli) {
-        this.idBuku = idBuku;
         this.judul = judul;
         this.penulis = penulis;
         this.genre = genre;
         this.batasHariPeminjaman = batasHariPeminjaman;
         this.hargaBeli = hargaBeli;
+    }
+
+    public BukuBuilder setIdBuku(int idBuku) {
+        this.idBuku = idBuku;
+        return this;
     }
 
     public BukuBuilder setIsbn(String isbn) {
