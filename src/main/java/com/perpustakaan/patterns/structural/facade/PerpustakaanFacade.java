@@ -53,25 +53,43 @@ public class PerpustakaanFacade {
         return x.cariBuku(idBuku);
     }
 
-    public Peminjaman pinjamBuku(int idPengguna, int idBuku) {
-        Member member = new MemberRepository().cariMember(idPengguna);
+    public Peminjaman pinjamBuku(int idMember, int idBuku) {
+        Member member = new MemberRepository().cariMember(idMember);
         Buku buku = new BukuRepository().cariBuku(idBuku);
 
-        if (member == null || buku == null) {
-            return null;
+        if (member == null) {
+            throw new RuntimeException("Member dengan ID tersebut tidak ditemukan");
         }
+
+        if (buku == null) {
+            throw new RuntimeException("Buku dengan ID tersebut tidak ditemukan");
+        }
+
         if (member.isBlocked()) {
-            return null;
+            throw new RuntimeException("Member ini sedang diblokir dan tidak dapat meminjam buku");
         }
+
+        PeminjamanRepository repo = new PeminjamanRepository();
+        int jumlahAktif = repo.pinjamanAktifMember(idMember);
+        if (jumlahAktif >= 3) {
+            throw new RuntimeException("Member telah mencapai limit maksimal peminjaman buku");
+        }
+
         if (!buku.getStatusBuku().getStatusBuku().equals("Tersedia")) {
-            return null;
+            throw new RuntimeException(
+                    "Buku tidak dapat dipinjam. Status saat ini: " + buku.getStatusBuku().getStatusBuku());
+        }
+
+        double deposit = 0;
+        if (buku.getClass().getSimpleName().contains("Langka")) {
+            deposit = buku.getHargaBeli() * 3.0;
         }
 
         buku.pinjam();
         new BukuRepository().updateStatusBuku(idBuku, "DIPINJAM");
 
         Peminjaman peminjaman = new Peminjaman(-1, member, buku, LocalDate.now());
-        new PeminjamanRepository().tambahPeminjaman(peminjaman);
+        repo.tambahPeminjaman(peminjaman, deposit);
 
         return peminjaman;
     }

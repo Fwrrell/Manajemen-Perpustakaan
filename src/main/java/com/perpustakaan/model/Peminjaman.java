@@ -8,10 +8,10 @@ public class Peminjaman {
     private Member member;
     private Buku bukuDipinjam;
     private LocalDate tanggalPeminjaman;
-    private LocalDate tanggalPengembalian;   
+    private LocalDate tanggalPengembalian;
     private LocalDate tanggalAkhirPeminjaman;
     private double jumlahDibayar;
-    private boolean statusPeminjaman;        
+    private boolean statusPeminjaman;
 
     public Peminjaman(int idPeminjaman, Member member, Buku bukuDipinjam, LocalDate tanggalPeminjaman) {
         this.idPeminjaman = idPeminjaman;
@@ -93,20 +93,25 @@ public class Peminjaman {
         this.idPeminjaman = idPeminjaman;
     }
 
-    public void detailPeminjaman() {
-        System.out.println("==================================================");
-        System.out.println("ID Peminjaman      : " + idPeminjaman);
-        System.out.println("Peminjam           : " + member.getNama());
-        System.out.println("Buku               : " + bukuDipinjam.getJudul());
-        System.out.println("Tanggal Pinjam     : " + tanggalPeminjaman);
-        System.out.println("Jatuh Tempo        : " + tanggalAkhirPeminjaman);
-        System.out.println("Tanggal Kembali    : " + (tanggalPengembalian != null ? tanggalPengembalian : "-"));
-        System.out.println("Status             : " + (statusPeminjaman ? "Masih Dipinjam" : "Selesai"));
-        if (tanggalPengembalian != null) {
-            System.out.println("Denda              : Rp" + hitungDendaKeterlambatan());
-            System.out.println("Total Bayar        : Rp" + hitungTotalBiayaSewa());
+    public String detailPeminjaman() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("==================================================\n");
+        sb.append("ID Peminjaman      : ").append(idPeminjaman).append("\n");
+        sb.append("Peminjam           : ").append(member.getNama()).append("\n");
+        sb.append("Buku               : ").append(bukuDipinjam.getJudul()).append("\n");
+        sb.append("Tanggal Pinjam     : ").append(tanggalPeminjaman).append("\n");
+        sb.append("Jatuh Tempo        : ").append(tanggalAkhirPeminjaman).append("\n");
+        sb.append("Tanggal Kembali    : ").append(tanggalPengembalian != null ? tanggalPengembalian : "-").append("\n");
+        sb.append("Status             : ").append(statusPeminjaman ? "Masih Dipinjam" : "Selesai");
+        if (tanggalPengembalian == null && jumlahDibayar > 0) {
+            sb.append("Uang Deposit   : Rp").append(jumlahDibayar).append("\n");
         }
-        System.out.println("==================================================");
+        if (tanggalPengembalian != null) {
+            sb.append("Denda          : Rp").append(hitungDendaKeterlambatan()).append("\n");
+            sb.append("Total Bayar    : Rp").append(hitungTotalBiayaSewa()).append("\n");
+        }
+        sb.append("==================================================");
+        return sb.toString();
     }
 
     @Override

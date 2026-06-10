@@ -3,7 +3,7 @@ package com.perpustakaan.ui;
 import com.perpustakaan.model.Buku;
 import com.perpustakaan.model.BukuKoleksiSpesial;
 import com.perpustakaan.model.Member;
-
+import com.perpustakaan.model.Peminjaman;
 import com.perpustakaan.patterns.creational.builder.BukuBuilder;
 import com.perpustakaan.patterns.creational.factory.BukuFactory;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
@@ -73,7 +73,7 @@ public class MainCLI {
         ui.tampilkanHeader("DASHBOARD PUSTAKAWAN");
         ui.tampilkanPesan("1. Kelola Buku");
         ui.tampilkanPesan("2. Kelola Member");
-        ui.tampilkanPesan("3. Transaksi Peminjaman");
+        ui.tampilkanPesan("3. Transaksi Buku");
         ui.tampilkanPesan("4. Pencarian Buku");
         ui.tampilkanPesan("0. Logout");
 
@@ -87,7 +87,7 @@ public class MainCLI {
                 menuKelolaMember();
                 break;
             case "3":
-                ui.tampilkanPesan("[!] Menu Transaksi belum diimplementasikan.");
+                menuTransaksiPeminjaman();
                 break;
             case "4":
                 menuPencarianBuku();
@@ -372,6 +372,47 @@ public class MainCLI {
             ui.tampilkanError("Input angka tidak valid!");
         } catch (Exception e) {
             ui.tampilkanError("Terjadi kesalahan: " + e.getMessage());
+        }
+    }
+
+    public void menuTransaksiPeminjaman() {
+        ui.tampilkanHeader("TRANSAKSI BUKU");
+        ui.tampilkanPesan("1. Peminjaman Buku");
+        ui.tampilkanPesan("2. Pengembalian Buku");
+        ui.tampilkanPesan("0. Kembali ke Dashboard");
+
+        String pilihan = ui.mintaInput("Pilih menu (0-2)");
+        switch (pilihan) {
+            case "1":
+                peminjamanBuku();
+                break;
+            case "2":
+                ui.tampilkanPesan("[!] Menu Transaksi belum diimplementasikan.");
+                break;
+            case "0":
+                break;
+            default:
+                ui.tampilkanError("Pilihan tidak valid!");
+        }
+    }
+
+    private void peminjamanBuku() {
+        ui.tampilkanHeader("TRANSAKSI PEMINJAMAN BUKU");
+        try {
+            int idMember = Integer.parseInt(ui.mintaInput("Masukkan ID Member (angka)"));
+            int idBuku = Integer.parseInt(ui.mintaInput("Masukkan ID Buku (angka)"));
+
+            Peminjaman peminjaman = facade.pinjamBuku(idMember, idBuku);
+
+            if (peminjaman != null) {
+                ui.tampilkanSukses("TRANSAKSI BERHASIL DICATAT");
+                ui.tampilkanPesan(peminjaman.detailPeminjaman());
+            }
+
+        } catch (NumberFormatException e) {
+            ui.tampilkanError("Input ID harus berupa angka valid");
+        } catch (RuntimeException e) {
+            ui.tampilkanError("TRANSAKSI DITOLAK: " + e.getMessage());
         }
     }
 }
