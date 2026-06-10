@@ -99,25 +99,26 @@ public class Peminjaman {
         this.idPeminjaman = idPeminjaman;
     }
 
-    public String detailPeminjaman() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("==================================================\n");
-        sb.append("ID Peminjaman      : ").append(idPeminjaman).append("\n");
-        sb.append("Peminjam           : ").append(member.getNama()).append("\n");
-        sb.append("Buku               : ").append(bukuDipinjam.getJudul()).append("\n");
-        sb.append("Tanggal Pinjam     : ").append(tanggalPeminjaman).append("\n");
-        sb.append("Jatuh Tempo        : ").append(tanggalAkhirPeminjaman).append("\n");
-        sb.append("Tanggal Kembali    : ").append(tanggalPengembalian != null ? tanggalPengembalian : "-").append("\n");
-        sb.append("Status             : ").append(statusPeminjaman ? "Masih Dipinjam" : "Selesai");
-        if (tanggalPengembalian == null && jumlahDibayar > 0) {
-            sb.append("Uang Deposit   : Rp").append(jumlahDibayar).append("\n");
+    public void setKerusakan(boolean rusak) {
+        if (rusak) {
+            this.dendaKerusakan = bukuDipinjam.getHargaBeli() / 2.0;
         }
+    }
+
+    public void detailPeminjaman() {
+        System.out.println("==================================================");
+        System.out.println("ID Peminjaman      : " + idPeminjaman);
+        System.out.println("Peminjam           : " + member.getNama());
+        System.out.println("Buku               : " + bukuDipinjam.getJudul());
+        System.out.println("Tanggal Pinjam     : " + tanggalPeminjaman);
+        System.out.println("Jatuh Tempo        : " + tanggalAkhirPeminjaman);
+        System.out.println("Tanggal Kembali    : " + (tanggalPengembalian != null ? tanggalPengembalian : "-"));
+        System.out.println("Status             : " + (statusPeminjaman ? "Masih Dipinjam" : "Selesai"));
         if (tanggalPengembalian != null) {
-            sb.append("Denda          : Rp").append(hitungDendaKeterlambatan()).append("\n");
-            sb.append("Total Bayar    : Rp").append(hitungTotalBiayaSewa()).append("\n");
+            System.out.println("Denda              : Rp" + hitungDendaKeterlambatan());
+            System.out.println("Total Bayar        : Rp" + hitungTotalBiayaSewa());
         }
-        sb.append("==================================================");
-        return sb.toString();
+        System.out.println("==================================================");
     }
 
     public void rincianBiaya() {

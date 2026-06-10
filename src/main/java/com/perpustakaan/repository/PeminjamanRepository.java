@@ -13,15 +13,8 @@ import com.perpustakaan.model.Peminjaman;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 
 public class PeminjamanRepository {
-<<<<<<< Updated upstream
     public int pinjamanAktifMember(int idMember) {
         String sql = "SELECT COUNT(*) FROM peminjaman WHERE id_member = ?";
-=======
-    public boolean tambahPeminjaman(Peminjaman peminjaman) {
-        String sql = "INSERT INTO peminjaman (id_member, id_buku, tanggal_peminjaman, tanggal_jatuh_tempo, status_peminjaman) VALUES"
-                +
-                "(?, ?, ?, ?, 'AKTIF')";
->>>>>>> Stashed changes
 
         try {
             Connection conn = KoneksiDB.getInstance().getConnection();
@@ -35,6 +28,22 @@ public class PeminjamanRepository {
             throw new RuntimeException("Gagal menghitung pinjaman aktif: " + e.getMessage());
         }
         return 0;
+    }
+
+    public int hitungPeminjamAktif() {
+        int total = 0;
+        String sql = "SELECT COUNT(DISTINCT id_member) AS total FROM peminjaman WHERE status_peminjaman = 'AKTIF'";
+        try {
+            Connection conn = KoneksiDB.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            System.out.println("Gagal menghitung peminjam aktif: " + e.getMessage());
+        }
+        return total;
     }
 
     public boolean tambahPeminjaman(Peminjaman peminjaman, double deposit) {
@@ -64,22 +73,6 @@ public class PeminjamanRepository {
         }
     }
 
-<<<<<<< Updated upstream
-    public int hitungPeminjamAktif() {
-        int total = 0;
-        String sql = "SELECT COUNT(DISTINCT id_member) AS total FROM peminjaman WHERE status_peminjaman = 'AKTIF'";
-        try {
-            Connection conn = KoneksiDB.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                total = rs.getInt("total");
-            }
-        } catch (SQLException e) {
-            System.out.println("Gagal menghitung peminjam aktif: " + e.getMessage());
-        }
-        return total;
-=======
     public Peminjaman cariPeminjaman(int idMember, int idBuku) {
         String sql = "SELECT * FROM peminjaman WHERE id_member = ? AND id_buku = ? AND status_peminjaman = 'AKTIF'";
 
@@ -130,7 +123,7 @@ public class PeminjamanRepository {
 
             double denda = peminjaman.hitungDendaKeterlambatan();
             double biayaSewa = peminjaman.getBukuDipinjam().getHargaSewa();
-                String status = "";
+            String status = "";
             if (denda > 0) {
                 status = "TERLAMBAT";
             } else {
@@ -147,6 +140,5 @@ public class PeminjamanRepository {
         } catch (SQLException e) {
             throw new RuntimeException("Gagal update pengembalian buku: " + e.getMessage());
         }
->>>>>>> Stashed changes
     }
 }

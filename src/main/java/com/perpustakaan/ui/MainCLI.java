@@ -95,14 +95,9 @@ public class MainCLI {
         System.out.println("--------------------------------------------------------------");
         ui.tampilkanPesan("1. Kelola Buku");
         ui.tampilkanPesan("2. Kelola Member");
-<<<<<<< Updated upstream
-        ui.tampilkanPesan("3. Transaksi Buku");
-        ui.tampilkanPesan("4. Pencarian Buku");
-=======
         ui.tampilkanPesan("3. Transaksi Peminjaman");
         ui.tampilkanPesan("4. Transaksi Pengembalian");
         ui.tampilkanPesan("5. Pencarian Buku");
->>>>>>> Stashed changes
         ui.tampilkanPesan("0. Logout");
 
         String pilihan = ui.mintaInput("Pilih menu (0-5)");
@@ -115,7 +110,7 @@ public class MainCLI {
                 menuKelolaMember();
                 break;
             case "3":
-                menuTransaksiPeminjaman();
+                peminjamanBuku();
                 break;
             case "4":
                 menuPengembalian();
@@ -513,27 +508,6 @@ public class MainCLI {
         }
     }
 
-    public void menuTransaksiPeminjaman() {
-        ui.tampilkanHeader("TRANSAKSI BUKU");
-        ui.tampilkanPesan("1. Peminjaman Buku");
-        ui.tampilkanPesan("2. Pengembalian Buku");
-        ui.tampilkanPesan("0. Kembali ke Dashboard");
-
-        String pilihan = ui.mintaInput("Pilih menu (0-2)");
-        switch (pilihan) {
-            case "1":
-                peminjamanBuku();
-                break;
-            case "2":
-                ui.tampilkanPesan("[!] Menu Transaksi belum diimplementasikan.");
-                break;
-            case "0":
-                break;
-            default:
-                ui.tampilkanError("Pilihan tidak valid!");
-        }
-    }
-
     private void peminjamanBuku() {
         ui.tampilkanHeader("TRANSAKSI PEMINJAMAN BUKU");
         try {
@@ -544,7 +518,7 @@ public class MainCLI {
 
             if (peminjaman != null) {
                 ui.tampilkanSukses("TRANSAKSI BERHASIL DICATAT");
-                ui.tampilkanPesan(peminjaman.detailPeminjaman());
+                peminjaman.detailPeminjaman();
             }
 
         } catch (NumberFormatException e) {
