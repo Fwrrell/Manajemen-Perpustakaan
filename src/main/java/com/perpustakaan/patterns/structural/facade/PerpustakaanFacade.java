@@ -26,7 +26,8 @@ public class PerpustakaanFacade {
         return new MemberRepository().tambahMember(nama, email, noTelpon, false);
     }
 
-    public boolean tambahBuku(String tipe, String judul, String penulis, String genre,int maksPeminjamanm, double hargaBeli, String info) {
+    public boolean tambahBuku(String tipe, String judul, String penulis, String genre, int maksPeminjamanm,
+            double hargaBeli, String info) {
         Buku newBuku = new BukuFactory().buatBuku(tipe, judul, penulis, genre, maksPeminjamanm, hargaBeli, null);
         return new BukuRepository().tambahBuku(newBuku);
     }
@@ -74,7 +75,7 @@ public class PerpustakaanFacade {
 
         return peminjaman;
     }
-    
+
     public List<Buku> pencarianBuku(String kriteria, String kataKunci) {
         switch (kriteria.toLowerCase()) {
             case "judul":
@@ -89,5 +90,25 @@ public class PerpustakaanFacade {
         }
 
         return pencarian.executePencarian(new BukuRepository().ambilBuku(), kataKunci);
+    }
+
+    public List<Member> ambilSemuaMember() {
+        return new MemberRepository().getAllMember();
+    }
+
+    public boolean updateMember(Member m) {
+        return new MemberRepository().updateMember(m);
+    }
+
+    public boolean ubahStatusBlokirMember(int idMember, boolean status) {
+        return new MemberRepository().ubahStatusBlokir(idMember, status);
+    }
+
+    public boolean hapusMember(int idMember) {
+        return new MemberRepository().hapusMember(idMember);
+    }
+
+    public Member cariMember(int idMember) {
+        return new MemberRepository().cariMember(idMember);
     }
 }

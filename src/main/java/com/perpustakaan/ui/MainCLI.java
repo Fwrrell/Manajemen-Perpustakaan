@@ -2,23 +2,30 @@ package com.perpustakaan.ui;
 
 import com.perpustakaan.model.Buku;
 import com.perpustakaan.model.BukuKoleksiSpesial;
+import com.perpustakaan.model.Member;
+
 import com.perpustakaan.patterns.creational.builder.BukuBuilder;
 import com.perpustakaan.patterns.creational.factory.BukuFactory;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 import com.perpustakaan.patterns.structural.proxy.SistemManajemenProxy;
+import com.perpustakaan.patterns.structural.facade.PerpustakaanFacade;
+
 import com.perpustakaan.repository.BukuRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class MainCLI {
     private final ConsoleUI ui;
     private final SistemManajemenProxy proxyKeamanan;
+    private final PerpustakaanFacade facade;
     private boolean isRunning;
     private boolean isLoggedIn;
 
     public MainCLI() {
         this.ui = new ConsoleUI();
         this.proxyKeamanan = new SistemManajemenProxy();
+        this.facade = new PerpustakaanFacade();
         this.isRunning = true;
         this.isLoggedIn = false;
     }
@@ -30,7 +37,11 @@ public class MainCLI {
             ui.tampilkanSukses("Sistem siap. Database terhubung.");
 
             while (isRunning) {
-                tampilkanMenuUtama();
+                if (!isLoggedIn) {
+                    tampilkanMenuLogin();
+                } else {
+                    tampilkanMenuUtama();
+                }
             }
         } catch (SQLException e) {
             ui.tampilkanError("Gagal terhubung ke database. Sistem dihentikan.");
@@ -73,7 +84,7 @@ public class MainCLI {
                 menuKelolaBuku();
                 break;
             case "2":
-                ui.tampilkanPesan("[!] Menu Kelola Member belum diimplementasikan.");
+                menuKelolaMember();
                 break;
             case "3":
                 ui.tampilkanPesan("[!] Menu Transaksi belum diimplementasikan.");
@@ -87,6 +98,132 @@ public class MainCLI {
                 break;
             default:
                 ui.tampilkanError("Pilihan tidak valid!");
+        }
+    }
+
+    public void menuKelolaMember() {
+        ui.tampilkanHeader("KELOLA MEMBER");
+        ui.tampilkanPesan("1. Lihat Semua Member");
+        ui.tampilkanPesan("2. Tambah Member Baru");
+        ui.tampilkanPesan("3. Update Data Member");
+        ui.tampilkanPesan("4. Ubah Status Blokir");
+        ui.tampilkanPesan("5. Hapus Member");
+        ui.tampilkanPesan("0. Kembali ke Dashboard");
+
+        String pilihan = ui.mintaInput("Pilih menu (0-5)");
+        switch (pilihan) {
+            case "1":
+                tampilkanSemuaMember();
+                break;
+            case "2":
+                tambahMemberBaru();
+                break;
+            case "3":
+                updateDataMember();
+                break;
+            case "4":
+                ubahStatusBlokirMember();
+                break;
+            case "5":
+                hapusMember();
+                break;
+            case "0":
+                break;
+            default:
+                ui.tampilkanError("Pilihan tidak valid!");
+        }
+    }
+
+    private void tampilkanSemuaMember() {
+        ui.tampilkanHeader("DAFTAR MEMBER");
+        List<Member> list = facade.ambilSemuaMember();
+        if (list.isEmpty()) {
+            ui.tampilkanPesan("Tidak ada member terdaftar.");
+        } else {
+            for (Member m : list) {
+                ui.tampilkanPesan(m.toString());
+            }
+        }
+    }
+
+    private void tambahMemberBaru() {
+        ui.tampilkanHeader("TAMBAH MEMBER BARU");
+        String nama = ui.mintaInput("Nama Lengkap");
+        String email = ui.mintaInput("Email");
+        String phone = ui.mintaInput("Nomor Telepon");
+
+        boolean sukses = facade.RegistrasiMember(nama, email, phone);
+        if (sukses) {
+            ui.tampilkanSukses("Member baru berhasil didaftarkan!");
+        }
+    }
+
+    private void updateDataMember() {
+        ui.tampilkanHeader("UPDATE DATA MEMBER");
+        try {
+            int id = Integer.parseInt(ui.mintaInput("Masukkan ID Member yang akan diupdate"));
+            Member m = facade.cariMember(id);
+            if (m == null) {
+                ui.tampilkanError("Member tidak ditemukan!");
+                return;
+            }
+
+            ui.tampilkanPesan("Data saat ini: " + m.toString());
+            String nama = ui.mintaInput("Nama baru (Enter jika tetap)");
+            String email = ui.mintaInput("Email baru (Enter jika tetap)");
+            String phone = ui.mintaInput("Telepon baru (Enter jika tetap)");
+
+            if (!nama.trim().isEmpty())
+                m.setNama(nama);
+            if (!email.trim().isEmpty())
+                m.setEmail(email);
+            if (!phone.trim().isEmpty())
+                m.setTelpon(phone);
+
+            if (facade.updateMember(m)) {
+                ui.tampilkanSukses("Data member berhasil diperbarui!");
+            }
+        } catch (NumberFormatException e) {
+            ui.tampilkanError("ID harus berupa angka!");
+        }
+    }
+
+    private void ubahStatusBlokirMember() {
+        ui.tampilkanHeader("UBAH STATUS BLOKIR");
+        try {
+            int id = Integer.parseInt(ui.mintaInput("Masukkan ID Member"));
+            Member m = facade.cariMember(id);
+            if (m == null) {
+                ui.tampilkanError("Member tidak ditemukan!");
+                return;
+            }
+
+            ui.tampilkanPesan("Status saat ini: " + (m.isBlocked() ? "TERBLOKIR" : "AKTIF"));
+            String pilihan = ui.mintaInput("Blokir member? (y/n)");
+            boolean status = pilihan.equalsIgnoreCase("y");
+
+            if (facade.ubahStatusBlokirMember(id, status)) {
+                ui.tampilkanSukses("Status blokir berhasil diubah!");
+            }
+        } catch (NumberFormatException e) {
+            ui.tampilkanError("ID harus berupa angka!");
+        }
+    }
+
+    private void hapusMember() {
+        ui.tampilkanHeader("HAPUS MEMBER");
+        try {
+            int id = Integer.parseInt(ui.mintaInput("Masukkan ID Member yang akan dihapus"));
+            String konfirmasi = ui.mintaInput("Anda yakin ingin menghapus member ini? (y/n)");
+            if (konfirmasi.equalsIgnoreCase("y")) {
+                if (facade.hapusMember(id)) {
+                    ui.tampilkanSukses("Member berhasil dihapus dari sistem.");
+                } else {
+                    ui.tampilkanError("Gagal menghapus member.");
+                }
+            }
+        } catch (NumberFormatException e) {
+            ui.tampilkanError("ID harus berupa angka!");
         }
     }
 
@@ -105,7 +242,44 @@ public class MainCLI {
     }
 
     public void menuPencarianBuku() {
-        ui.tampilkanHeader("Menu Pencarian");
+        ui.tampilkanHeader("PENCARIAN BUKU");
+        ui.tampilkanPesan("Cari berdasarkan:");
+        ui.tampilkanPesan("1. Judul");
+        ui.tampilkanPesan("2. Penulis");
+        ui.tampilkanPesan("3. Genre");
+        ui.tampilkanPesan("0. Kembali");
+
+        String pilihan = ui.mintaInput("Pilih kriteria (0-3)");
+        String kriteria = "";
+
+        switch (pilihan) {
+            case "1":
+                kriteria = "judul";
+                break;
+            case "2":
+                kriteria = "penulis";
+                break;
+            case "3":
+                kriteria = "genre";
+                break;
+            case "0":
+                return;
+            default:
+                ui.tampilkanError("Pilihan tidak valid!");
+                return;
+        }
+
+        String kataKunci = ui.mintaInput("Masukkan kata kunci");
+        List<Buku> hasil = facade.pencarianBuku(kriteria, kataKunci);
+
+        if (hasil.isEmpty()) {
+            ui.tampilkanPesan("Buku tidak ditemukan.");
+        } else {
+            ui.tampilkanSukses("Ditemukan " + hasil.size() + " buku:");
+            for (Buku b : hasil) {
+                ui.tampilkanPesan(b.toString());
+            }
+        }
     }
 
     private void tambahBukuBaru() throws IllegalArgumentException {

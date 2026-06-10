@@ -77,5 +77,10 @@ public class Member {
         buku.ubahStatusPeminjaman();
         bukuDipinjam.remove(buku);
         riwayatPeminjaman.add(buku);
-    }    
+    }
+
+    @Override
+    public String toString() {
+        return "[" + idPengguna + "] " + nama + " (" + email + ") - " + (isBlocked ? "TERBLOKIR" : "AKTIF");
+    }
 }

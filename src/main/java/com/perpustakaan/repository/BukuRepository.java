@@ -12,6 +12,7 @@ import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 import com.perpustakaan.patterns.structural.decorator.BukuLangkaDecorator;
 import com.perpustakaan.patterns.structural.decorator.BukuPopulerDecorator;
 import com.perpustakaan.patterns.structural.decorator.BukuPromo;
+import com.perpustakaan.patterns.creational.builder.BukuBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -156,7 +157,16 @@ public class BukuRepository {
     }
 
     private Buku buatBuku(ResultSet rs) throws SQLException {
-        int idBuku = rs.getInt("id_buku");
+        String idBukuStr = rs.getString("id_buku");
+        int idBuku;
+        try {
+            idBuku = Integer.parseInt(idBukuStr);
+        } catch (NumberFormatException e) {
+            // Jika ID di DB adalah String (ex: BK-001), kita ambil angka belakangnya
+            // atau gunakan hash
+            idBuku = idBukuStr.hashCode();
+        }
+
         String judul = rs.getString("judul");
         String penulis = rs.getString("penulis");
         String genre = rs.getString("genre");
@@ -171,7 +181,7 @@ public class BukuRepository {
         double hargaBeli = rs.getDouble("harga_beli");
 
         Buku buku;
-        switch (tipe) {
+        switch (tipe.toUpperCase()) {
             case "FIKSI":
                 buku = new BukuFiksi(idBuku, judul, penulis, genre, maks, hargaBeli);
                 break;
@@ -180,6 +190,27 @@ public class BukuRepository {
                 break;
             case "PELAJARAN":
                 buku = new BukuPelajaran(idBuku, judul, penulis, genre, maks, hargaBeli, info);
+                break;
+            case "KOLEKSI SPESIAL":
+                BukuBuilder builder = new com.perpustakaan.patterns.creational.builder.BukuBuilder(idBuku, judul,
+                        penulis,
+                        genre, maks, hargaBeli);
+                if (info != null && info.contains("|")) {
+                    String[] parts = info.split("\\|");
+                    for (String part : parts) {
+                        if (part.startsWith("ISBN:"))
+                            builder.setIsbn(part.substring(5));
+                        else if (part.startsWith("Thn:"))
+                            builder.setTahunTerbit(part.substring(4));
+                        else if (part.startsWith("Pub:"))
+                            builder.setPenerbit(part.substring(4));
+                        else if (part.startsWith("Rak:"))
+                            builder.setLokasiRak(part.substring(4));
+                        else if (part.startsWith("Edisi:"))
+                            builder.setEdisi(part.substring(6));
+                    }
+                }
+                buku = builder.build();
                 break;
             default:
                 throw new IllegalStateException("Tipe buku tidak dikenal: " + tipe);
