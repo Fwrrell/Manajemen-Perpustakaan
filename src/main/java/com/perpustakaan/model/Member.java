@@ -6,22 +6,22 @@ public class Member {
     private String nama;
     private String email;
     private String noTelpon;
-    private String idPengguna;
+    private int idPengguna;
     private boolean isBlocked;
     private List<Peminjaman> bukuDipinjam;
     private List<Peminjaman> riwayatPeminjaman;
 
-    public Member(String nama, String email, String noTelpon, String idPengguna, boolean isBlocked, List<Peminjaman> bukuDipinjam, List<Peminjaman> riwayatPeminjamann) {
+    public Member(String nama, String email, String noTelpon, int idPengguna, boolean isBlocked, List<Peminjaman> bukuDipinjam, List<Peminjaman> riwayatPeminjamann) {
         this.nama = nama;
         this.email = email;
         this.noTelpon = noTelpon;
-        this.idPengguna = idPengguna;
         this.isBlocked = isBlocked;
         this.bukuDipinjam = bukuDipinjam;
         this.riwayatPeminjaman = riwayatPeminjamann;
+        this.idPengguna = idPengguna;
     }
 
-    public String getIdPengguna() {
+    public int getIdMember() {
         return this.idPengguna;
     }
 
@@ -63,6 +63,10 @@ public class Member {
 
     public void setBlocked(boolean blocked) {
         this.isBlocked = blocked;
+    }
+
+    public void setIdPengguna(int idPengguna) {
+        this.idPengguna = idPengguna;
     }
 
     public void tambahBukuDipinjam(Peminjaman buku) {

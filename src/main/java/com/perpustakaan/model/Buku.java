@@ -4,7 +4,7 @@ import com.perpustakaan.patterns.behavioral.state.StatusBuku;
 import com.perpustakaan.patterns.behavioral.state.StatusTersedia;
 
 public abstract class Buku {
-    protected String idBuku;
+    protected int idBuku;
     protected String judul;
     protected String penulis;
     protected String genre;
@@ -14,7 +14,7 @@ public abstract class Buku {
     protected double hargaDenda;
     protected StatusBuku statusBuku;
 
-    public Buku(String idBuku, String judul, String penulis, String genre, int batasHariPeminjaman, double hargaBeli) {
+    public Buku(int idBuku, String judul, String penulis, String genre, int batasHariPeminjaman, double hargaBeli) {
         this.idBuku = idBuku;
         this.judul = judul;
         this.penulis = penulis;
@@ -26,7 +26,7 @@ public abstract class Buku {
         this.statusBuku = new StatusTersedia();
     }
 
-    public String getIdBuku() {
+    public int getIdBuku() {
         return this.idBuku;
     }
 

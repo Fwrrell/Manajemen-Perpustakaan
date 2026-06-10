@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class Peminjaman {
-    private String idPeminjaman;
-    private Member pengguna;
+    private int idPeminjaman;
+    private Member member;
     private Buku bukuDipinjam;
     private LocalDate tanggalPeminjaman;
     private LocalDate tanggalPengembalian;   
@@ -13,9 +13,9 @@ public class Peminjaman {
     private double jumlahDibayar;
     private boolean statusPeminjaman;        
 
-    public Peminjaman(String idPeminjaman, Member pengguna, Buku bukuDipinjam, LocalDate tanggalPeminjaman) {
+    public Peminjaman(int idPeminjaman, Member member, Buku bukuDipinjam, LocalDate tanggalPeminjaman) {
         this.idPeminjaman = idPeminjaman;
-        this.pengguna = pengguna;
+        this.member = member;
         this.bukuDipinjam = bukuDipinjam;
         this.tanggalPeminjaman = tanggalPeminjaman;
         this.tanggalAkhirPeminjaman = tanggalPeminjaman.plusDays(bukuDipinjam.getDurasiHariPeminjaman());
@@ -50,19 +50,19 @@ public class Peminjaman {
     }
 
     public boolean isLunas() {
-        return jumlahDibayar == hitungTotalBiayaSewa();
+        return jumlahDibayar >= hitungTotalBiayaSewa();
     }
 
     public void ubahStatusPeminjaman() {
         this.statusPeminjaman = false;
     }
 
-    public String getIdPeminjaman() {
+    public int getIdPeminjaman() {
         return this.idPeminjaman;
     }
 
-    public Member getPengguna() {
-        return this.pengguna;
+    public Member getMember() {
+        return this.member;
     }
 
     public Buku getBukuDipinjam() {
@@ -89,10 +89,14 @@ public class Peminjaman {
         return this.statusPeminjaman;
     }
 
+    public void setIdPeminjaman(int idPeminjaman) {
+        this.idPeminjaman = idPeminjaman;
+    }
+
     public void detailPeminjaman() {
         System.out.println("==================================================");
         System.out.println("ID Peminjaman      : " + idPeminjaman);
-        System.out.println("Peminjam           : " + pengguna.getNama());
+        System.out.println("Peminjam           : " + member.getNama());
         System.out.println("Buku               : " + bukuDipinjam.getJudul());
         System.out.println("Tanggal Pinjam     : " + tanggalPeminjaman);
         System.out.println("Jatuh Tempo        : " + tanggalAkhirPeminjaman);
@@ -108,7 +112,7 @@ public class Peminjaman {
     @Override
     public String toString() {
         return "[" + idPeminjaman + "] " + bukuDipinjam.getJudul()
-                + " oleh " + pengguna.getNama()
+                + " oleh " + member.getNama()
                 + " (" + (statusPeminjaman ? "Dipinjam" : "Buku Sudah Dikembalikan") + ")";
     }
 }

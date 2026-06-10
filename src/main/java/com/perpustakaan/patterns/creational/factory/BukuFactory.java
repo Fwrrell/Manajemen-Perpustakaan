@@ -6,17 +6,16 @@ import com.perpustakaan.model.BukuJurnal;
 import com.perpustakaan.model.BukuPelajaran;
 
 public class BukuFactory {
-    public Buku buatBuku(String idBuku, String judul, String penulis, String genre,
-            int batasHariPeminjaman, double hargaBeli, String jenisBuku) {
-
-        if (jenisBuku.equalsIgnoreCase("Fiksi")) {
-            return new BukuFiksi(idBuku, judul, penulis, genre, batasHariPeminjaman, hargaBeli);
-        } else if (jenisBuku.equalsIgnoreCase("Jurnal")) {
-            return new BukuJurnal(idBuku, judul, penulis, genre, batasHariPeminjaman, hargaBeli, "JurnalID-" + idBuku);
-        } else if (jenisBuku.equalsIgnoreCase("Pelajaran")) {
-            return new BukuPelajaran(idBuku, judul, penulis, genre, batasHariPeminjaman, hargaBeli, genre);
+    public Buku buatBuku(String tipe, String judul, String penulis, String genre,int batasHariPeminjaman, double hargaBeli, String info) {
+        int id = -1;
+        if (tipe.equalsIgnoreCase("Fiksi")) {
+            return new BukuFiksi(id, judul, penulis, genre, batasHariPeminjaman, hargaBeli);
+        } else if (tipe.equalsIgnoreCase("Jurnal")) {
+            return new BukuJurnal(id, judul, penulis, genre, batasHariPeminjaman, hargaBeli, info);
+        } else if (tipe.equalsIgnoreCase("Pelajaran")) {
+            return new BukuPelajaran(id, judul, penulis, genre, batasHariPeminjaman, hargaBeli, info);
         } else {
-            throw new IllegalArgumentException("Jenis buku '" + jenisBuku + "' tidak valid di sistem.");
+            throw new IllegalArgumentException("Tipe buku '" + tipe + "' tidak valid di sistem.");
         }
     }
 }
