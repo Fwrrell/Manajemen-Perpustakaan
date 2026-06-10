@@ -16,6 +16,6 @@ public class BukuPromo extends BukuDecorator{
     @Override
     public double getBiayaDenda() {
         // TODO Auto-generated method stub
-        return super.getBiayaDenda() - this.getHargaSewa();
+        return super.getBiayaDenda() / 2;
     }
 }

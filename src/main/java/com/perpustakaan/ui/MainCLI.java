@@ -4,7 +4,6 @@ import com.perpustakaan.model.Buku;
 import com.perpustakaan.patterns.creational.factory.BukuFactory;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 import com.perpustakaan.patterns.structural.proxy.SistemManajemenProxy;
-import com.perpustakaan.repository.BukuRepository;
 
 import java.sql.SQLException;
 
@@ -61,6 +60,7 @@ public class MainCLI {
         ui.tampilkanPesan("1. Kelola Buku");
         ui.tampilkanPesan("2. Kelola Member");
         ui.tampilkanPesan("3. Transaksi Peminjaman");
+        ui.tampilkanPesan("4. Pencarian Buku");
         ui.tampilkanPesan("0. Logout");
 
         String pilihan = ui.mintaInput("Pilih menu (0-3)");
@@ -74,6 +74,9 @@ public class MainCLI {
                 break;
             case "3":
                 ui.tampilkanPesan("[!] Menu Transaksi belum diimplementasikan.");
+                break;
+            case "4":
+                menuPencarianBuku();
                 break;
             case "0":
                 isLoggedIn = false;
@@ -95,6 +98,10 @@ public class MainCLI {
         }
     }
 
+    public void menuPencarianBuku() {
+        ui.tampilkanHeader("Menu Pencarian");
+    }
+
     private void tambahBukuBaru() throws IllegalArgumentException {
         ui.tampilkanHeader("TAMBAH BUKU BARU");
 
@@ -112,15 +119,14 @@ public class MainCLI {
             double hargaBeli = Double.parseDouble(hargaStr);
 
             BukuFactory factory = new BukuFactory();
-            Buku bukuBaru = factory.buatBuku(idBuku, judul, penulis, genre, batasHari, hargaBeli, jenis);
+            // Buku bukuBaru = factory.buatBuku(idBuku, judul, penulis, genre, batasHari, hargaBeli, jenis);
 
-            BukuRepository repo = new BukuRepository();
-            boolean sukses = repo.simpanBuku(bukuBaru);
+            
 
-            if (sukses) {
-                ui.tampilkanSukses(
-                        "Buku '" + judul + "' (" + bukuBaru.getJenisBuku() + ") berhasil ditambahkan ke database!");
-            }
+            // if (sukses) {
+            //     ui.tampilkanSukses(
+            //             "Buku '" + judul + "' (" + bukuBaru.getJenisBuku() + ") berhasil ditambahkan ke database!");
+            // }
         } catch (NumberFormatException e) {
             ui.tampilkanError("Input angka tidak valid! Pastikan Batas Hari dan Harga Beli diisi angka.");
         } catch (RuntimeException e) {

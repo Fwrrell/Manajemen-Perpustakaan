@@ -11,17 +11,17 @@ public class Member {
     private List<Peminjaman> bukuDipinjam;
     private List<Peminjaman> riwayatPeminjaman;
 
-    public Member(String nama, String email, String noTelpon, String idPengguna, boolean isBlocked, List<Peminjaman> bukuDipinjam, List<Peminjaman> riwayatPeminjamann) {
+    public Member(String nama, String email, String noTelpon, int idPengguna, boolean isBlocked, List<Peminjaman> bukuDipinjam, List<Peminjaman> riwayatPeminjamann) {
         this.nama = nama;
         this.email = email;
         this.noTelpon = noTelpon;
         this.isBlocked = isBlocked;
         this.bukuDipinjam = bukuDipinjam;
         this.riwayatPeminjaman = riwayatPeminjamann;
-        this.idPengguna = -1;
+        this.idPengguna = idPengguna;
     }
 
-    public int getIdPengguna() {
+    public int getIdMember() {
         return this.idPengguna;
     }
 
