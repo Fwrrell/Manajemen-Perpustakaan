@@ -89,6 +89,30 @@ public class PerpustakaanFacade {
         return peminjaman;
     }
 
+    public boolean pengembalianBuku(Peminjaman peminjaman, boolean isRusak, double jumlahBayar) {
+        peminjaman.setPengembalian(LocalDate.now());
+        peminjaman.setKerusakan(isRusak);
+
+        peminjaman.bayar(jumlahBayar);
+        if (!peminjaman.isLunas()) {
+            return false;
+        }
+
+        Buku buku = peminjaman.getBukuDipinjam();
+
+        if (isRusak) {
+            buku.tandaiKerusakan();
+            new BukuRepository().updateStatusBuku(buku.getIdBuku(), "RUSAK");
+        } else {
+            buku.kembalikan();
+            new BukuRepository().updateStatusBuku(buku.getIdBuku(), "TERSEDIA");
+        }
+
+        new PeminjamanRepository().updatePengembalian(peminjaman);
+
+        return true;
+    }
+
     public List<Buku> pencarianBuku(String kriteria, String kataKunci) {
         switch (kriteria.toLowerCase()) {
             case "judul":
@@ -103,6 +127,10 @@ public class PerpustakaanFacade {
         }
 
         return pencarian.executePencarian(new BukuRepository().ambilBuku(), kataKunci);
+    }
+
+    public Peminjaman cariPeminjaman(int idMember, int idBuku) {
+        return new PeminjamanRepository().cariPeminjaman(idMember, idBuku);
     }
 
     public List<Member> ambilSemuaMember() {

@@ -12,6 +12,7 @@ public class Peminjaman {
     private LocalDate tanggalAkhirPeminjaman;
     private double jumlahDibayar;
     private boolean statusPeminjaman;
+    private double dendaKerusakan;
 
     public Peminjaman(int idPeminjaman, Member member, Buku bukuDipinjam, LocalDate tanggalPeminjaman) {
         this.idPeminjaman = idPeminjaman;
@@ -22,9 +23,10 @@ public class Peminjaman {
         this.tanggalPengembalian = null;
         this.jumlahDibayar = 0;
         this.statusPeminjaman = true;
+        this.dendaKerusakan = 0;
     }
 
-    public void pengembalian(LocalDate tanggal) {
+    public void setPengembalian(LocalDate tanggal) {
         this.tanggalPengembalian = tanggal;
         this.statusPeminjaman = false;
     }
@@ -42,7 +44,7 @@ public class Peminjaman {
     }
 
     public double hitungTotalBiayaSewa() {
-        return bukuDipinjam.getHargaSewa() + hitungDendaKeterlambatan();
+        return bukuDipinjam.getHargaSewa() + hitungDendaKeterlambatan() + this.dendaKerusakan;
     }
 
     public void bayar(double jumlahDibayar) {
@@ -85,6 +87,10 @@ public class Peminjaman {
         return this.jumlahDibayar;
     }
 
+    public double getDendaKerusakan() {
+        return this.dendaKerusakan;
+    }
+
     public boolean getStatusPeminjaman() {
         return this.statusPeminjaman;
     }
@@ -112,6 +118,15 @@ public class Peminjaman {
         }
         sb.append("==================================================");
         return sb.toString();
+    }
+
+    public void rincianBiaya() {
+        System.out.println("==================================================");
+        System.out.println("Biaya Sewa       : Rp" + bukuDipinjam.getHargaSewa());
+        System.out.println("Denda Telat      : Rp" + hitungDendaKeterlambatan());
+        System.out.println("Biaya Kerusakan  : Rp" + getDendaKerusakan());
+        System.out.println("TOTAL BAYAR    : Rp" + hitungTotalBiayaSewa());
+        System.out.println("==================================================");
     }
 
     @Override

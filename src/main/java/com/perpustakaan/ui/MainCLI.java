@@ -8,12 +8,13 @@ import com.perpustakaan.patterns.creational.builder.BukuBuilder;
 import com.perpustakaan.patterns.creational.factory.BukuFactory;
 import com.perpustakaan.patterns.creational.singleton.KoneksiDB;
 import com.perpustakaan.patterns.structural.proxy.SistemManajemenProxy;
-import com.perpustakaan.patterns.structural.decorator.BukuBaruDecorator;
 import com.perpustakaan.patterns.structural.facade.PerpustakaanFacade;
 
 import com.perpustakaan.repository.BukuRepository;
+import com.perpustakaan.repository.PeminjamanRepository;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class MainCLI {
@@ -94,11 +95,17 @@ public class MainCLI {
         System.out.println("--------------------------------------------------------------");
         ui.tampilkanPesan("1. Kelola Buku");
         ui.tampilkanPesan("2. Kelola Member");
+<<<<<<< Updated upstream
         ui.tampilkanPesan("3. Transaksi Buku");
         ui.tampilkanPesan("4. Pencarian Buku");
+=======
+        ui.tampilkanPesan("3. Transaksi Peminjaman");
+        ui.tampilkanPesan("4. Transaksi Pengembalian");
+        ui.tampilkanPesan("5. Pencarian Buku");
+>>>>>>> Stashed changes
         ui.tampilkanPesan("0. Logout");
 
-        String pilihan = ui.mintaInput("Pilih menu (0-3)");
+        String pilihan = ui.mintaInput("Pilih menu (0-5)");
 
         switch (pilihan) {
             case "1":
@@ -111,6 +118,9 @@ public class MainCLI {
                 menuTransaksiPeminjaman();
                 break;
             case "4":
+                menuPengembalian();
+                break;
+            case "5":
                 menuPencarianBuku();
                 break;
             case "0":
@@ -272,6 +282,40 @@ public class MainCLI {
             tambahBukuSpesial();
         } else if ("3".equals(pilihan)) {
             tandaiLabelBuku();
+        }
+    }
+
+    public void menuPengembalian() {
+        ui.tampilkanHeader("TRANSAKSI PENGEMBALIAN");
+
+        try {
+            int idMember = Integer.parseInt(ui.mintaInput("Masukkan id Member"));
+            int idBuku = Integer.parseInt(ui.mintaInput("Masukkan id Buku"));
+
+            Peminjaman peminjaman = facade.cariPeminjaman(idMember, idBuku);
+
+            if (peminjaman == null) {
+                ui.tampilkanError("Buku ini tidak dipinjam");
+                return;
+            }
+
+            ui.tampilkanPesan("Buku : " + peminjaman.getBukuDipinjam().getJudul());
+
+            boolean isRusak = ui.mintaInput("Buku Rusak? (yes / no)").equalsIgnoreCase("yes");
+            peminjaman.setKerusakan(isRusak);
+            peminjaman.setPengembalian(LocalDate.now());
+
+            peminjaman.rincianBiaya();
+
+            double bayar = Double.parseDouble(ui.mintaInput("Jumlah dibayar"));
+
+            if (facade.pengembalianBuku(peminjaman, isRusak, bayar)) {
+                ui.tampilkanSukses("Pengembalian berhasil");
+            } else {
+                ui.tampilkanError("Pengembalian gagal karena belum lunas");
+            }
+        } catch (NumberFormatException e) {
+            ui.tampilkanError("ID harus berupa angka!");
         }
     }
 

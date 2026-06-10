@@ -1,6 +1,7 @@
 package com.perpustakaan.patterns.structural.decorator;
 
 import com.perpustakaan.model.Buku;
+import com.perpustakaan.patterns.behavioral.state.StatusBuku;
 
 public class BukuDecorator extends Buku {
     protected Buku buku;
@@ -32,5 +33,30 @@ public class BukuDecorator extends Buku {
     public double getBiayaDenda() {
         // TODO Auto-generated method stub
         return buku.getBiayaDenda();
+    }
+
+    @Override
+    public StatusBuku getStatusBuku() {
+        return buku.getStatusBuku();
+    }
+
+    @Override
+    public void setStatusBuku(StatusBuku status) {
+        buku.setStatusBuku(status);
+    }
+
+    @Override
+    public void pinjam() {
+        buku.pinjam();
+    }
+
+    @Override
+    public void kembalikan() {
+        buku.kembalikan();
+    }
+
+    @Override
+    public void tandaiKerusakan() {
+        buku.tandaiKerusakan();
     }
 }

@@ -59,3 +59,15 @@ INSERT INTO buku (judul, penulis, genre, tipe_buku, info_buku, maks_peminjaman, 
     ('Bumi Manusia',                'Pramoedya A. Toer', 'Sejarah',    'FIKSI',   NULL,            14,   100000,  'TERSEDIA', 1,     1,    1,   0),
 	('Harry Potter',                'J.K.Rowling', 		 'Fantasi',    'FIKSI',   NULL,            14,   100000,  'TERSEDIA', 1,     1,    1,	1),
     ('Kimia Organik Dasar',         'Raymond Chang',     'Sains',      'PELAJARAN','Kimia',        21,   120000,  'TERSEDIA', 0,     0,    0,   0);
+
+-- Dummy peminjaman: campuran selesai tepat waktu, terlambat, dan masih aktif
+INSERT INTO peminjaman (id_member, id_buku, tanggal_peminjaman, tanggal_jatuh_tempo, tanggal_pengembalian, biaya_sewa, denda, status_peminjaman) VALUES
+-- member  buku  tgl_pinjam     jatuh_tempo    tgl_kembali    sewa    denda   status
+    (1,     2,    '2026-04-01',  '2026-04-22',  '2026-04-20',  15000,  0,      'DIKEMBALIKAN'),  -- Budi - Matematika, tepat waktu
+    (2,     3,    '2026-05-01',  '2026-05-08',  '2026-05-13',  5000,   25000,  'TERLAMBAT'),     -- Siti - Nat Geo, telat 5 hari
+    (3,     6,    '2026-05-10',  '2026-05-31',  '2026-05-30',  12000,  0,      'DIKEMBALIKAN'),  -- Ahmad - Kimia, tepat waktu
+    (1,     1,    '2026-06-02',  '2026-06-16',  NULL,          0,      0,      'AKTIF'),         -- Budi - Laskar Pelangi, masih dipinjam
+    (2,     5,    '2026-06-05',  '2026-06-19',  NULL,          0,      0,      'AKTIF');         -- Siti - Harry Potter, masih dipinjam
+
+-- Sinkronkan status buku yang sedang dipinjam (konsisten dgn peminjaman AKTIF)
+UPDATE buku SET status_buku = 'DIPINJAM' WHERE id_buku IN (1, 5);
