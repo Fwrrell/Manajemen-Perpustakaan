@@ -30,7 +30,7 @@ public class BukuRepository {
 
         try {
             Connection conn = KoneksiDB.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, buku.getJudul());
             ps.setString(2, buku.getPenulis());
@@ -51,7 +51,14 @@ public class BukuRepository {
             ps.setDouble(7, buku.getHargaBeli());
 
             int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
+            if (affectedRows > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    buku.setIdBuku(rs.getInt(1));
+                }
+                return true;
+            }
+            return false;
 
         } catch (SQLException e) {
             throw new RuntimeException("Gagal menyimpan buku ke database: " + e.getMessage());
@@ -162,8 +169,6 @@ public class BukuRepository {
         try {
             idBuku = Integer.parseInt(idBukuStr);
         } catch (NumberFormatException e) {
-            // Jika ID di DB adalah String (ex: BK-001), kita ambil angka belakangnya
-            // atau gunakan hash
             idBuku = idBukuStr.hashCode();
         }
 
@@ -192,9 +197,10 @@ public class BukuRepository {
                 buku = new BukuPelajaran(idBuku, judul, penulis, genre, maks, hargaBeli, info);
                 break;
             case "KOLEKSI SPESIAL":
-                BukuBuilder builder = new com.perpustakaan.patterns.creational.builder.BukuBuilder(idBuku, judul,
+                BukuBuilder builder = new BukuBuilder(judul,
                         penulis,
                         genre, maks, hargaBeli);
+                builder.setIdBuku(idBuku);
                 if (info != null && info.contains("|")) {
                     String[] parts = info.split("\\|");
                     for (String part : parts) {

@@ -103,29 +103,29 @@ public class MainCLI {
 
     public void menuKelolaMember() {
         ui.tampilkanHeader("KELOLA MEMBER");
-        ui.tampilkanPesan("1. Lihat Semua Member");
-        ui.tampilkanPesan("2. Tambah Member Baru");
+        ui.tampilkanPesan("1. Tambah Member Baru");
+        ui.tampilkanPesan("2. Lihat Semua Member");
         ui.tampilkanPesan("3. Update Data Member");
-        ui.tampilkanPesan("4. Ubah Status Blokir");
-        ui.tampilkanPesan("5. Hapus Member");
+        ui.tampilkanPesan("4. Hapus Member");
+        ui.tampilkanPesan("5. Ubah Status Blokir");
         ui.tampilkanPesan("0. Kembali ke Dashboard");
 
         String pilihan = ui.mintaInput("Pilih menu (0-5)");
         switch (pilihan) {
             case "1":
-                tampilkanSemuaMember();
+                tambahMemberBaru();
                 break;
             case "2":
-                tambahMemberBaru();
+                tampilkanSemuaMember();
                 break;
             case "3":
                 updateDataMember();
                 break;
             case "4":
-                ubahStatusBlokirMember();
+                hapusMember();
                 break;
             case "5":
-                hapusMember();
+                ubahStatusBlokirMember();
                 break;
             case "0":
                 break;
@@ -152,9 +152,11 @@ public class MainCLI {
         String email = ui.mintaInput("Email");
         String phone = ui.mintaInput("Nomor Telepon");
 
-        boolean sukses = facade.RegistrasiMember(nama, email, phone);
-        if (sukses) {
-            ui.tampilkanSukses("Member baru berhasil didaftarkan!");
+        int idMember = facade.RegistrasiMember(nama, email, phone);
+        if (idMember > 0) {
+            ui.tampilkanSukses("Member baru berhasil didaftarkan dengan ID: " + idMember);
+        } else {
+            ui.tampilkanError("Gagal mendaftarkan member baru.");
         }
     }
 
@@ -310,7 +312,8 @@ public class MainCLI {
 
             if (sukses) {
                 ui.tampilkanSukses(
-                        "Buku '" + judul + "' (" + bukuBaru.getJenisBuku() + ") berhasil ditambahkan ke database!");
+                        "Buku '" + judul + "' (" + bukuBaru.getJenisBuku() + ") berhasil ditambahkan dengan ID: "
+                                + bukuBaru.getIdBuku());
             }
         } catch (NumberFormatException e) {
             ui.tampilkanError("Input angka tidak valid! Pastikan Batas Hari dan Harga Beli diisi angka.");
@@ -325,8 +328,6 @@ public class MainCLI {
 
         try {
             // Data Wajib
-            String idBukuStr = ui.mintaInput("ID Buku (ex: 999)");
-            int idBuku = Integer.parseInt(idBukuStr);
             String judul = ui.mintaInput("Judul Buku");
             String penulis = ui.mintaInput("Penulis");
             String genre = ui.mintaInput("Kategori/Genre");
@@ -334,7 +335,7 @@ public class MainCLI {
             int batasHari = Integer.parseInt(ui.mintaInput("Batas Hari Peminjaman (angka)"));
             double hargaBeli = Double.parseDouble(ui.mintaInput("Harga Beli (angka)"));
 
-            BukuBuilder builder = new BukuBuilder(idBuku, judul, penulis, genre, batasHari, hargaBeli);
+            BukuBuilder builder = new BukuBuilder(judul, penulis, genre, batasHari, hargaBeli);
 
             // Data Opsional
             String isbn = ui.mintaInput("Nomor ISBN (opsional)");
@@ -363,7 +364,8 @@ public class MainCLI {
             boolean sukses = repo.tambahBuku(bukuSpesial);
 
             if (sukses) {
-                ui.tampilkanSukses("Buku Koleksi Spesial '" + judul + "' berhasil didaftarkan ke sistem!");
+                ui.tampilkanSukses("Buku Koleksi Spesial '" + judul + "' berhasil didaftarkan dengan ID: "
+                        + bukuSpesial.getIdBuku());
             }
 
         } catch (NumberFormatException e) {

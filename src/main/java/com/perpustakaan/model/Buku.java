@@ -30,6 +30,10 @@ public abstract class Buku {
         return this.idBuku;
     }
 
+    public void setIdBuku(int idBuku) {
+        this.idBuku = idBuku;
+    }
+
     public String getJudul() {
         return this.judul;
     }
