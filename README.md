@@ -12,13 +12,13 @@ Aplikasi ini sudah mendukung operasional dasar perpustakaan, antara lain:
 - **Pencarian Pintar**: Cari buku berdasarkan Judul, Penulis, atau Genre.
 - **Sistem Login Aman**: Proteksi akun pustakawan dengan sistem pembatasan percobaan gagal.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Bahasa**: Java (JDK 11+)
 - **Database**: MySQL
 - **Library**: JDBC (untuk koneksi database)
 
-## 🏗️ Design Patterns yang Digunakan
+## Design Patterns yang Digunakan
 
 Sebagai inti dari tugas ADPL, kami menerapkan beberapa pattern berikut:
 
@@ -31,7 +31,7 @@ Sebagai inti dari tugas ADPL, kami menerapkan beberapa pattern berikut:
 7.  **State**: Mengelola status buku (Tersedia/Dipinjam) dengan lebih elegan.
 8.  **Strategy**: Memungkinkan pergantian algoritma pencarian buku saat aplikasi berjalan.
 
-## 🚀 Cara Menjalankan
+## Cara Menjalankan
 
 1.  **Persiapan Database**:
     - Import file `sql/schema.sql` ke MySQL.
